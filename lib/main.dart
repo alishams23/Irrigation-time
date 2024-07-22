@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 import 'package:time_sort/api/sms.dart';
 import 'package:time_sort/pages/home.dart';
+import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
 
   // ApiServiceSms apiService = ApiServiceSms();
@@ -56,6 +58,7 @@ class _MainPageState extends State<MainPage> {
  
 
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -74,7 +77,7 @@ class _MainPageState extends State<MainPage> {
         brightness: Brightness.dark,
         fontFamily: "Vazir",
         
-colorSchemeSeed: const Color.fromRGBO(86, 80, 14, 171),
+colorSchemeSeed: Color.fromARGB(84, 41, 65, 11),
         /* dark theme settings */
       ),
       themeMode: ThemeMode.dark, 
@@ -84,44 +87,42 @@ colorSchemeSeed: const Color.fromRGBO(86, 80, 14, 171),
          ThemeMode.dark for dark theme
       */
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(title: 'سامانه ی میرآب',),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key,});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+
   int selectedPageIndex = 0;
   List pages =[PowerPage(),HomePage(),];
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
+
+
+  @override
+  void initState() {
+    super.initState();
+    _checkToken();
+  }
+  Future<void> _checkToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null || token.isEmpty) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } 
+  }
+  
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -160,12 +161,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
         
-        backgroundColor: Colors.black,
+        // backgroundColor: Colors.black,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: [Text(widget.title,textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),)],),
+          children: [Text('سامانه ی میرآب',textDirection: TextDirection.rtl,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),)],),
       ),
       body:PageView.builder(
         physics: const NeverScrollableScrollPhysics(),

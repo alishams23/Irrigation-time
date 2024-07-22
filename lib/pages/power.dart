@@ -23,10 +23,16 @@ class _PowerPageState extends State<PowerPage> {
               height: 300, // Adjust size if necessary
               margin: EdgeInsets.only(bottom: 50),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(300),
+                borderRadius: BorderRadius.circular(300),gradient:const  LinearGradient( 
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                  Color.fromARGB(1, 0, 0, 0),
+                  Color.fromARGB(39, 189, 2, 2)
+                ]),
                 border: Border.all(
-                  color: Color.fromARGB(255, 58, 43, 9),
-                  width: 2.5,
+                  color:Color.fromARGB(44, 58, 30, 9),
+                  width: 20,
                 ),
               ),
               child: Center(
@@ -34,13 +40,20 @@ class _PowerPageState extends State<PowerPage> {
                   width: 200, // Adjust size if necessary
                   height: 200, // Adjust size if necessary
                   decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 128, 46, 46),
+                      // color: Color.fromARGB(255, 205, 56, 7),
+                      gradient:const  LinearGradient( 
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                  Color.fromARGB(235, 199, 57, 0),
+                  Color.fromARGB(239, 111, 1, 1)
+                ]),
                       borderRadius: BorderRadius.circular(100)),
                   child:const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      Padding(
-                       padding: const EdgeInsets.only(top: 15,bottom: 10),
+                       padding:  EdgeInsets.only(top: 15,bottom: 10),
                        child: Icon(
                                        Icons.power_settings_new_rounded,
                                        size: 50,
@@ -59,29 +72,41 @@ class _PowerPageState extends State<PowerPage> {
               margin:EdgeInsets.symmetric(vertical: 20,horizontal: 20),
 
             decoration: BoxDecoration(
-              color:Color.fromARGB(255, 62, 48, 8),
-               borderRadius: BorderRadius.circular(10)
+              color: Color.fromARGB(15, 76, 200, 19),
+            
+               borderRadius: BorderRadius.circular(50)
                
               
             ),
             child:const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("محمدیان",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),Text("نوبت آقای :  ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),],
+              children: [Text("محمدیان",style: TextStyle(
+                color: Color.fromARGB(255, 166, 250, 170),
+                fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),Text("نوبت آقای :  ",style: TextStyle(
+                color: Color.fromARGB(255, 166, 250, 170),
+                  fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),],
             ),
           ),
            Container(
               padding:EdgeInsets.symmetric(vertical: 10,horizontal: 60),
-              margin:EdgeInsets.symmetric(vertical: 0,horizontal: 30),
+              margin:EdgeInsets.symmetric(vertical: 0,horizontal: 20),
 
             decoration: BoxDecoration(
-              color:const Color.fromARGB(255, 41, 31, 1),
-               borderRadius: BorderRadius.circular(10)
+            
+         
+                
+               borderRadius: BorderRadius.circular(20)
                
               
             ),
             child:const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("محمدیان",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),Text("نفر بعد  :  ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),],
+              children: [Text("محمدیان",style: TextStyle(
+                color: Color.fromARGB(255, 194, 194, 194),
+                fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),Text("نفر بعد  :  ",style: TextStyle(
+                color: Color.fromARGB(255, 194, 194, 194),
+                  
+                  fontSize: 20,fontWeight: FontWeight.bold),textDirection: TextDirection.rtl,),],
             ),
           )
           ],
