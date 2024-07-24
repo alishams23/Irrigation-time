@@ -12,11 +12,30 @@ ApiServiceSms apiService = ApiServiceSms();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
-  await apiService.fetchPosts();
+  if (message.body != null && message.body!.contains("خاموش"))
+    await apiService.fetchPosts();
 }
 
 void main() {
   runApp(MainPage());
+}
+
+class MyInheritedWidget extends InheritedWidget {
+  final bool status;
+  final dynamic updateData;
+
+  MyInheritedWidget(
+      {required this.status, required this.updateData, required Widget child})
+      : super(child: child);
+
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(MyInheritedWidget oldWidget) {
+    return status != oldWidget.status;
+  }
 }
 
 class MainPage extends StatefulWidget {
@@ -25,15 +44,20 @@ class MainPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
+  bool is_on = true;
   void Check() async {
-    // print("_______________");
-
     final permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
     print(permissionsGranted);
+  }
+
+  void _updateData(bool newData) {
+    setState(() {
+      is_on = newData;
+    });
   }
 
   @override
@@ -42,12 +66,21 @@ class _MainPageState extends State<MainPage> {
     Check();
     telephony.listenIncomingSms(
         onNewMessage: (SmsMessage message) {
-          apiService.fetchPosts();
-          print("444444");
+          if (message.body != null && message.body!.contains("خاموش")) {
+            apiService.fetchPosts();
 
-          // Handle message
-          print("____________");
-          print("1");
+            setState(() {
+              is_on = false;
+            });
+          }
+
+          if (message.body != null && message.body!.contains("روشن")) {
+            apiService.fetchPosts();
+
+            setState(() {
+              is_on = true;
+            });
+          }
         },
         onBackgroundMessage: backgroundMessageHandler);
     super.initState();
@@ -56,29 +89,33 @@ class _MainPageState extends State<MainPage> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        fontFamily: "Vazir",
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        fontFamily: "Vazir",
-        colorSchemeSeed: Color.fromARGB(84, 41, 65, 11),
-        /* dark theme settings */
-      ),
-      themeMode: ThemeMode.dark,
+    return MyInheritedWidget(
+      status: is_on,
+      updateData: _updateData,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          fontFamily: "Vazir",
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          fontFamily: "Vazir",
+          colorSchemeSeed: Color.fromARGB(84, 41, 65, 11),
+          /* dark theme settings */
+        ),
+        themeMode: ThemeMode.dark,
 
-      /* ThemeMode.system to follow system theme, 
-         ThemeMode.light for light theme, 
-         ThemeMode.dark for dark theme
-      */
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+        /* ThemeMode.system to follow system theme, 
+           ThemeMode.light for light theme, 
+           ThemeMode.dark for dark theme
+        */
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:time_sort/main.dart';
 
 class PowerPage extends StatefulWidget {
   PowerPage({
@@ -13,13 +14,17 @@ class PowerPage extends StatefulWidget {
 }
 
 class _PowerPageState extends State<PowerPage> {
+   bool _is_on = true;
+
   @override
   Widget build(BuildContext context) {
+  final myInheritedWidget = MyInheritedWidget.of(context);
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("${myInheritedWidget!.status}"),
             Container(
               width: 300, // Adjust size if necessary
               height: 300, // Adjust size if necessary
@@ -39,37 +44,45 @@ class _PowerPageState extends State<PowerPage> {
                 ),
               ),
               child: Center(
-                child: Container(
-                    width: 200, // Adjust size if necessary
-                    height: 200, // Adjust size if necessary
-                    decoration: BoxDecoration(
-                        // color: Color.fromARGB(255, 205, 56, 7),
-                        gradient: const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color.fromARGB(235, 199, 57, 0),
-                              Color.fromARGB(239, 111, 1, 1)
-                            ]),
-                        borderRadius: BorderRadius.circular(100)),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 15, bottom: 10),
-                          child: Icon(
-                            Icons.power_settings_new_rounded,
-                            size: 50,
-                            color: Colors.white,
+                child: GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      _is_on = !_is_on;
+                    });
+                    myInheritedWidget.updateData(_is_on);
+                  },
+                  child: Container(
+                      width: 200, // Adjust size if necessary
+                      height: 200, // Adjust size if necessary
+                      decoration: BoxDecoration(
+                          // color: Color.fromARGB(255, 205, 56, 7),
+                          gradient: const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color.fromARGB(235, 199, 57, 0),
+                                Color.fromARGB(239, 111, 1, 1)
+                              ]),
+                          borderRadius: BorderRadius.circular(100)),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 15, bottom: 10),
+                            child: Icon(
+                              Icons.power_settings_new_rounded,
+                              size: 50,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "چاه خاموش است",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
+                          Text(
+                            "چاه خاموش است",
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      )),
+                ),
               ),
             ),
             Container(
