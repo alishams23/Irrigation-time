@@ -8,12 +8,12 @@ import 'package:time_sort/pages/home.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
 
-ApiServiceSms apiService = ApiServiceSms();
+ApiMotor apiService = ApiMotor();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
   if (message.body != null && message.body!.contains("خاموش"))
-    await apiService.fetchPosts();
+    await apiService.turnOff();
 }
 
 void main() {
@@ -67,7 +67,7 @@ class MainPageState extends State<MainPage> {
     telephony.listenIncomingSms(
         onNewMessage: (SmsMessage message) {
           if (message.body != null && message.body!.contains("خاموش")) {
-            apiService.fetchPosts();
+            apiService.turnOff();
 
             setState(() {
               is_on = false;
@@ -75,7 +75,7 @@ class MainPageState extends State<MainPage> {
           }
 
           if (message.body != null && message.body!.contains("روشن")) {
-            apiService.fetchPosts();
+            apiService.turnOff();
 
             setState(() {
               is_on = true;
