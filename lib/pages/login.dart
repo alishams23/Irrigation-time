@@ -1,9 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_print, use_build_context_synchronously, prefer_const_constructors, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/main.dart';
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/api/account/login-sms/'),
+        Uri.parse('http://192.168.1.103:8000/api/account/login-sms/'),
         body: {'number': _phoneController.text},
       );
 
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _verifyCode() async {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/account/code_check/'),
+      Uri.parse('http://192.168.1.103:8000/api/account/code_check/'),
       body: {
         'number': _phoneController.text,
         'code': _codeController.text,
