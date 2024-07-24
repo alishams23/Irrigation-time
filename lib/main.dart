@@ -8,11 +8,11 @@ import 'package:time_sort/pages/home.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
 
-// ApiServiceSms apiService = ApiServiceSms();
-// final Telephony telephony = Telephony.instance;
+ApiServiceSms apiService = ApiServiceSms();
+final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
-  // await apiService.fetchPosts();
+  await apiService.fetchPosts();
 }
 
 void main() {
@@ -32,24 +32,24 @@ class _MainPageState extends State<MainPage> {
   void Check() async {
     // print("_______________");
 
-    // final permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
-    // print(permissionsGranted);
+    final permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
+    print(permissionsGranted);
   }
+
   @override
   void initState() {
     // TODO: implement initState
     Check();
-    //     telephony.listenIncomingSms(
-    // 	onNewMessage: (SmsMessage message) {
-    //      apiService.fetchPosts();
-    //      print("444444");
+    telephony.listenIncomingSms(
+        onNewMessage: (SmsMessage message) {
+          apiService.fetchPosts();
+          print("444444");
 
-    // 		// Handle message
-    //     print("____________");
-    //     print("1");
-    // 	},
-    // 	onBackgroundMessage: backgroundMessageHandler
-    // );
+          // Handle message
+          print("____________");
+          print("1");
+        },
+        onBackgroundMessage: backgroundMessageHandler);
     super.initState();
   }
 
