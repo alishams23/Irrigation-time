@@ -2,19 +2,20 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_sort/models/water_well.dart';
 
-class ApiMotor {
+class ApiMotorPower {
   final String baseUrl = "http://192.168.1.103:8000/api";
 
   Future<String?> _getToken() async {
     // Obtain shared preferences.
     final prefs = await SharedPreferences.getInstance();
     // Try reading data from the 'token' key.
-    print('token ${prefs.getString('token')}');
     return prefs.getString('token');
   }
 
   Future<void> turnOff() async {
+    print('[TURN OFF MOTOR API]');
     String? token = await _getToken();
     if (token == null) {
       throw Exception('Token not found');
@@ -29,10 +30,7 @@ class ApiMotor {
       ).timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON
-        var data = jsonDecode(response.body);
-        // Handle the data as needed
-        return data;
+        print('[REQUEST CODE: 200]');
       } else {
         // If the server did not return a 200 OK response, throw an exception
         throw Exception('Failed to load posts');
@@ -43,6 +41,7 @@ class ApiMotor {
   }
 
   Future<void> turnOn() async {
+    print('[TURN ON MOTOR API]');
     String? token = await _getToken();
     if (token == null) {
       throw Exception('Token not found');
@@ -57,13 +56,39 @@ class ApiMotor {
       ).timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON
-        var data = jsonDecode(response.body);
-        // Handle the data as needed
-        return data;
+        print('[REQUEST CODE: 200]');
       } else {
         // If the server did not return a 200 OK response, throw an exception
         throw Exception('Failed to load posts');
+      }
+    } on Exception catch (e) {
+      throw Exception('Network error: $e');
+    }
+  }
+
+  Future<WaterWell> getStatus() async {
+    print('[GET STATUS API]');
+    String? token = await _getToken();
+    if (token == null) {
+      throw Exception('Token not found');
+    }
+
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/water-well-status/'),
+        headers: {
+          'Authorization': 'Token $token',
+        },
+      ).timeout(const Duration(seconds: 4));
+
+      if (response.statusCode == 200) {
+        // If the server returns a 200 OK response, parse the JSON
+        var data = jsonDecode(utf8.decode(response.bodyBytes));
+        // Handle the data as needed
+        return WaterWell.fromJson(data);
+      } else {
+        // If the server did not return a 200 OK response, throw an exception
+        throw Exception('Failed to load user data');
       }
     } on Exception catch (e) {
       throw Exception('Network error: $e');

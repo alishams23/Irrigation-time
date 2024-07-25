@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
-import 'package:time_sort/api/sms.dart';
+import 'package:time_sort/api/motor_power.dart';
 import 'package:time_sort/pages/home.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
 
-ApiMotor apiService = ApiMotor();
+ApiMotorPower apiService = ApiMotorPower();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
