@@ -2,23 +2,20 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_event_calendar/flutter_event_calendar.dart';
+// import 'package:flutter_event_calendar/flutter_event_calendar.dart';
 
 
 
 
-import 'package:flutter_event_calendar/src/handlers/event_calendar.dart';
-import 'package:flutter_event_calendar/src/models/calendar_options.dart';
-import 'package:flutter_event_calendar/src/models/datetime.dart';
-import 'package:flutter_event_calendar/src/models/event.dart';
-import 'package:flutter_event_calendar/src/models/style/day_options.dart';
-import 'package:flutter_event_calendar/src/models/style/event_options.dart';
-import 'package:flutter_event_calendar/src/models/style/headers_options.dart';
-import 'package:flutter_event_calendar/src/utils/calendar_types.dart';
+// import 'package:flutter_event_calendar/src/handlers/event_calendar.dart';
+// import 'package:time_sort/widgets/event_calendar.dart';
 
 
 import 'package:time_sort/api/future_farmers.dart';
 import 'package:time_sort/models/sorted_member.dart';
 import 'package:time_sort/widgets/calendar_card.dart';
+// import 'package:time_sort/widgets/event_calendar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
