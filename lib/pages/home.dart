@@ -1,7 +1,10 @@
-// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_super_parameters, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_super_parameters, avoid_unnecessary_containers, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_event_calendar/flutter_event_calendar.dart';
+import 'package:time_sort/api/future_farmers.dart';
+import 'package:time_sort/models/sorted_member.dart';
+import 'package:time_sort/widgets/calendar_card.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({
@@ -13,13 +16,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ApiFutureFarmers apiService = ApiFutureFarmers();
+
+  bool _isLoading = true; // Loading state
+
+  late List _membersList;
+
+  @override
+  void initState() {
+    super.initState();
+    _getMembers();
+  }
+
+  Future<void> _getMembers() async {
+    try {
+      _membersList = await apiService.getFarmers();
+      setState(() {
+        _membersList = _membersList;
+        _isLoading = false;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'مشکلی در اتصال به اینترنت پیش آمده',
+            textDirection: TextDirection.rtl,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         child: EventCalendar(
           calendarType: CalendarType.JALALI,
           calendarLanguage: 'fa',
+          showLoadingForEvent: true,
           headerOptions: HeaderOptions(
               headerTextColor: Colors.white,
               resetDateColor: Colors.white,
@@ -51,16 +87,22 @@ class _HomePageState extends State<HomePage> {
               headerMonthBackColor: Color.fromARGB(255, 20, 26, 16)),
           showEvents: false,
           events: [
-            Event(
-              child: const Text('Laravel Event'),
-              dateTime: CalendarDateTime(
-                year: 1403,
-                color: Colors.black,
-                month: 4,
-                day: 25,
-                calendarType: CalendarType.JALALI,
+            for (SortedMember item in _membersList)
+              Event(
+                child: CalendarCard(
+                  fullName: item.member.fullName,
+                  hour: item.hour!,
+                  minute: item.minute!,
+                  duration: item.time,
+                ),
+                dateTime: CalendarDateTime(
+                  year: item.year!,
+                  color: Colors.black,
+                  month: item.month!,
+                  day: item.day!,
+                  calendarType: CalendarType.JALALI,
+                ),
               ),
-            ),
           ],
         ),
       ),

@@ -5,12 +5,22 @@ class SortedMember {
   final User member;
   final int sort;
   final int time;
+  final int? year;
+  final int? month;
+  final int? day;
+  final int? hour;
+  final int? minute;
 
   SortedMember({
     required this.id,
     required this.member,
     required this.sort,
     required this.time,
+    this.year,
+    this.month,
+    this.day,
+    this.hour,
+    this.minute,
   });
 
   factory SortedMember.fromJson(Map<String, dynamic> json) {
@@ -19,6 +29,11 @@ class SortedMember {
       member: User.fromJson(json['member']),
       sort: json['sort'],
       time: json['time'],
+      year: json['year'],
+      month: json['month'],
+      day: json['day'],
+      hour: json['hour'],
+      minute: json['minute'],
     );
   }
 }
