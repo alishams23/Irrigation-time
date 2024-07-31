@@ -186,15 +186,19 @@ class _PowerPageState extends State<PowerPage> {
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
                     margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(15, 76, 200, 19),
-                        borderRadius: BorderRadius.circular(50)),
+                        color: Color.fromARGB(82, 38, 57, 57),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border(
+                            top: BorderSide(
+                                color: Color.fromARGB(255, 37, 48, 45),
+                                width: 1))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           _motorStatus.currentMember.member.fullName,
                           style: TextStyle(
-                              color: Color.fromARGB(255, 166, 250, 170),
+                              // color: Color.fromARGB(255, 188, 251, 192),
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                           textDirection: TextDirection.rtl,
@@ -202,9 +206,9 @@ class _PowerPageState extends State<PowerPage> {
                         Text(
                           "نوبت آقای :  ",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 166, 250, 170),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                            // color: Color.fromARGB(255, 166, 250, 170),
+                            fontSize: 18,
+                          ),
                           textDirection: TextDirection.rtl,
                         ),
                       ],
@@ -221,17 +225,18 @@ class _PowerPageState extends State<PowerPage> {
                         Text(
                           _motorStatus.nextMember.member.fullName,
                           style: TextStyle(
-                              color: Color.fromARGB(255, 194, 194, 194),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                            color: Color.fromARGB(255, 194, 194, 194),
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                           textDirection: TextDirection.rtl,
                         ),
                         Text(
                           "نفر بعد  :  ",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 194, 194, 194),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                            color: Color.fromARGB(255, 194, 194, 194),
+                            fontSize: 17,
+                          ),
                           textDirection: TextDirection.rtl,
                         ),
                       ],

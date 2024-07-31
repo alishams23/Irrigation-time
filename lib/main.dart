@@ -1,5 +1,5 @@
-// ignore_for_file: library_private_types_in_public_api, use_key_in_widget_constructors, avoid_print, use_build_context_synchronously, prefer_const_constructors, deprecated_member_use, unused_import, use_super_parameters, prefer_const_constructors_in_immutables, non_constant_identifier_names, prefer_const_literals_to_create_immutables
-
+// ignore_for_file: use_super_parameters, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, curly_braces_in_flow_control_structures, unused_element, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, avoid_print
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
@@ -38,85 +38,44 @@ class MyInheritedWidget extends InheritedWidget {
   }
 }
 
-class MainPage extends StatefulWidget {
-  MainPage({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  MainPageState createState() => MainPageState();
-}
-
-class MainPageState extends State<MainPage> {
-  bool is_on = true;
-  void Check() async {
-    final permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
-    print(permissionsGranted);
-  }
-
-  void _updateData(bool newData) {
-    setState(() {
-      is_on = newData;
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    Check();
-    telephony.listenIncomingSms(
-        onNewMessage: (SmsMessage message) {
-          if (message.body != null && message.body!.contains("خاموش")) {
-            apiService.turnOff();
-
-            setState(() {
-              is_on = false;
-            });
-          }
-
-          if (message.body != null && message.body!.contains("روشن")) {
-            apiService.turnOff();
-
-            setState(() {
-              is_on = true;
-            });
-          }
-        },
-        onBackgroundMessage: backgroundMessageHandler);
-    super.initState();
-  }
-
-  // This widget is the root of your application.
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MyInheritedWidget(
-      status: is_on,
-      updateData: _updateData,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          fontFamily: "Vazir",
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
-          useMaterial3: true,
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          fontFamily: "Vazir",
-          colorSchemeSeed: Color.fromARGB(84, 41, 65, 11),
-          /* dark theme settings */
-        ),
-        themeMode: ThemeMode.dark,
-
-        /* ThemeMode.system to follow system theme, 
-           ThemeMode.light for light theme, 
-           ThemeMode.dark for dark theme
-        */
-        debugShowCheckedModeBanner: false,
-        home: const MyHomePage(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        fontFamily: "Vazir",
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: "Vazir",
+        colorSchemeSeed: Color.fromARGB(84, 41, 65, 11),
+      ),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
+      home: FutureBuilder<bool>(
+        future: _checkLoginStatus(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData && snapshot.data == true) {
+            return const MyHomePage();
+          } else {
+            return LoginPage();
+          }
+        },
       ),
     );
+  }
+
+  Future<bool> _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    return token != null && token.isNotEmpty;
   }
 }
 
@@ -136,10 +95,13 @@ class _MyHomePageState extends State<MyHomePage> {
     HomePage(),
   ];
 
+  bool is_on = true;
+
   @override
   void initState() {
     super.initState();
     _checkToken();
+    _setupTelephony();
   }
 
   Future<void> _checkToken() async {
@@ -153,67 +115,151 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _setupTelephony() {
+    telephony.requestPhoneAndSmsPermissions.then((permissionsGranted) {
+      if (permissionsGranted != null && permissionsGranted) {
+        telephony.listenIncomingSms(
+          onNewMessage: (SmsMessage message) {
+            if (message.body != null && message.body!.contains("خاموش")) {
+              apiService.turnOff();
+              setState(() {
+                is_on = false;
+              });
+            }
+
+            if (message.body != null && message.body!.contains("روشن")) {
+              apiService.turnOff();
+              setState(() {
+                is_on = true;
+              });
+            }
+          },
+          onBackgroundMessage: backgroundMessageHandler,
+        );
+      }
+    });
+  }
+
+  Future<void> _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
+
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('خروج از برنامه'),
+            content: Text('آیا می‌خواهید از برنامه خارج شوید؟'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('خیر'),
+              ),
+              TextButton(
+                onPressed: () => exit(0),
+                child: Text('بله'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedPageIndex = index;
-          });
-        },
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.electric_meter,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: selectedPageIndex,
+          onDestinationSelected: (int index) {
+            setState(() {
+              selectedPageIndex = index;
+            });
+          },
+          destinations: const <NavigationDestination>[
+            NavigationDestination(
+              selectedIcon: Icon(
+                Icons.electric_meter,
+              ),
+              icon: Icon(Icons.electric_meter_outlined),
+              label: 'وضعیت چاه',
             ),
-            icon: Icon(Icons.electric_meter_outlined),
-            label: 'وضعیت چاه',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.task_rounded),
-            icon: Icon(Icons.task_outlined),
-            label: 'لیست نوبت',
-          ),
-        ],
-      ),
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-
-        // backgroundColor: Colors.black,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              'سامانه ی میرآب',
-              textDirection: TextDirection.rtl,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-            )
+            NavigationDestination(
+              selectedIcon: Icon(Icons.task_rounded),
+              icon: Icon(Icons.task_outlined),
+              label: 'لیست نوبت',
+            ),
           ],
         ),
-      ),
-      body: PageView.builder(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'سامانه ی میرآب',
+                textDirection: TextDirection.rtl,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+              )
+            ],
+          ),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                padding:
+                    EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
+                child: Text(
+                  'سامانه ی میرآب',
+                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  textDirection: TextDirection.rtl,
+                ),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(170, 3, 111, 107),
+                ),
+              ),
+              GestureDetector(
+                onTap: _logout,
+                child: Container(
+                  decoration: BoxDecoration(),
+                  padding: EdgeInsets.symmetric(vertical: 30, horizontal: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.exit_to_app,
+                        size: 20,
+                      ),
+                      Text(
+                        'خروج',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: PageView.builder(
           physics: const NeverScrollableScrollPhysics(),
           onPageChanged: (page) {
             setState(() {
               selectedPageIndex = page;
             });
           },
-          // controller: controller,
           itemBuilder: (context, position) {
             return pages[selectedPageIndex];
-          }),
+          },
+        ),
+      ),
     );
   }
 }
