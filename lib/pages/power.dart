@@ -57,7 +57,6 @@ class _PowerPageState extends State<PowerPage> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-
                   Container(
                     width: 360, // Adjust size if necessary
                     height: 360, // Adjust size if necessary
@@ -68,14 +67,8 @@ class _PowerPageState extends State<PowerPage> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: _motorStatus.isOn
-                            ? [
-                                Color.fromARGB(39, 79, 95, 1),
-                                Color.fromARGB(39, 79, 95, 1)
-                              ]
-                            : [
-                                Color.fromARGB(39, 189, 2, 2),
-                                Color.fromARGB(39, 189, 2, 2)
-                              ],
+                            ? [Color.fromARGB(39, 79, 95, 1), Color.fromARGB(39, 79, 95, 1)]
+                            : [Color.fromARGB(39, 189, 2, 2), Color.fromARGB(39, 189, 2, 2)],
                       ),
                       border: Border.all(
                         color: Color.fromARGB(44, 0, 0, 0),
@@ -129,28 +122,21 @@ class _PowerPageState extends State<PowerPage> {
                           }
                         },
                         child: Container(
-                          
                           width: 200, // Adjust size if necessary
                           height: 200, // Adjust size if necessary
                           decoration: BoxDecoration(
-                             border: Border(
-                                  top: BorderSide(
-                                    
-                                      color:_motorStatus.isOn
-                            ? Color.fromARGB(255, 127, 154, 16):const Color.fromARGB(255, 144, 35, 27),
-                                      width: 1)),
+                            border: Border(
+                                top: BorderSide(
+                                    color: _motorStatus.isOn
+                                        ? Color.fromARGB(255, 127, 154, 16)
+                                        : const Color.fromARGB(255, 144, 35, 27),
+                                    width: 1)),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: _motorStatus.isOn
-                                  ? [
-                                      Color.fromARGB(235, 57, 76, 1),
-                                      Color.fromARGB(235, 57, 76, 1)
-                                    ]
-                                  : [
-                                      Color.fromARGB(239, 111, 1, 1),
-                                      Color.fromARGB(239, 111, 1, 1)
-                                    ],
+                                  ? [Color.fromARGB(235, 57, 76, 1), Color.fromARGB(235, 57, 76, 1)]
+                                  : [Color.fromARGB(239, 111, 1, 1), Color.fromARGB(239, 111, 1, 1)],
                             ),
                             borderRadius: BorderRadius.circular(100),
                           ),
@@ -159,16 +145,12 @@ class _PowerPageState extends State<PowerPage> {
                             children: [
                               _isLoading
                                   ? Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 20, bottom: 20),
+                                      padding: EdgeInsets.only(top: 20, bottom: 20),
                                       child: CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.white),
+                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                       ))
                                   : Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 15, bottom: 10),
+                                      padding: EdgeInsets.only(top: 15, bottom: 10),
                                       child: Icon(
                                         Icons.power_settings_new_rounded,
                                         size: 50,
@@ -176,9 +158,7 @@ class _PowerPageState extends State<PowerPage> {
                                       ),
                                     ),
                               Text(
-                                _motorStatus.isOn
-                                    ? "چاه روشن است"
-                                    : "چاه خاموش است",
+                                _motorStatus.isOn ? "چاه روشن است" : "چاه خاموش است",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -191,16 +171,11 @@ class _PowerPageState extends State<PowerPage> {
                     ),
                   ),
                   Container(
-                   
-                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                     decoration: BoxDecoration(
-                              color: Color.fromARGB(82, 33, 39, 26),
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border(
-                                  top: BorderSide(
-                                    
-                                      color: Color.fromARGB(255, 39, 44, 38),
-                                      width: 1))),
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(82, 33, 39, 26),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border(top: BorderSide(color: Color.fromARGB(255, 39, 44, 38), width: 1))),
                     child: Column(
                       children: [
                         Container(
@@ -209,10 +184,7 @@ class _PowerPageState extends State<PowerPage> {
                           decoration: BoxDecoration(
                               color: Color.fromARGB(82, 56, 86, 17),
                               borderRadius: BorderRadius.circular(20),
-                              border: Border(
-                                  top: BorderSide(
-                                      color: Color.fromARGB(255, 55, 73, 37),
-                                      width: 1))),
+                              border: Border(top: BorderSide(color: Color.fromARGB(255, 55, 73, 37), width: 1))),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -235,39 +207,37 @@ class _PowerPageState extends State<PowerPage> {
                             ],
                           ),
                         ),
-                     
-                     Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                  margin: EdgeInsets.only(left: 20, right: 20,bottom: 30),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _motorStatus.nextMember.member.fullName,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 194, 194, 194),
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
-                      Text(
-                        "نفر بعد  :  ",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 194, 194, 194),
-                          fontSize: 17,
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ],
-                  ),
-                                    )
-                   ],
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                          margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _motorStatus.nextMember.member.fullName,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                              Text(
+                                "نفر بعد  :  ",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 17,
+                                ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                                  ],
+                ],
               )
             : Center(
                 child: CircularProgressIndicator(

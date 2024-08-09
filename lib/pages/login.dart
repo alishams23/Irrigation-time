@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = true;
         });
         final response = await http.post(
-          Uri.parse('http://192.168.1.107:8000/api/account/login-sms/'),
+          Uri.parse('http://37.152.190.222/api/account/login-sms/'),
           body: {'number': _phoneController.text},
         );
 
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     final response = await http.post(
-      Uri.parse('http://192.168.1.107:8000/api/account/code_check/'),
+      Uri.parse('http://37.152.190.222/api/account/code_check/'),
       body: {
         'number': _phoneController.text,
         'code': _codeController.text,
@@ -168,8 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Colors.white,
                                 ),
                                 padding: MaterialStateProperty.all(
-                                  EdgeInsets.symmetric(
-                                      horizontal: 40, vertical: 15),
+                                  EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                                 ),
                               ),
                               onPressed: () {},
@@ -190,8 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                                   Colors.white,
                                 ),
                                 padding: MaterialStateProperty.all(
-                                  EdgeInsets.symmetric(
-                                      horizontal: 40, vertical: 15),
+                                  EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                                 ),
                               ),
                               onPressed: () {
@@ -271,9 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 20),
                 Text(
                   textDirection: TextDirection.rtl,
-                  _isCodeExpired
-                      ? 'کد منقضی شده است'
-                      : '$_start ثانیه باقی مانده ',
+                  _isCodeExpired ? 'کد منقضی شده است' : '$_start ثانیه باقی مانده ',
                   style: TextStyle(fontSize: 14, color: Colors.white),
                 ),
                 if (_errorMessage.isNotEmpty)

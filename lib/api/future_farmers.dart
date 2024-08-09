@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/models/sorted_member.dart';
 
 class ApiFutureFarmers {
-  final String baseUrl = "http://192.168.1.107:8000/api";
+  final String baseUrl = "http://37.152.190.222/api";
 
   Future<String?> _getToken() async {
     // Obtain shared preferences.
@@ -34,7 +34,6 @@ class ApiFutureFarmers {
         // If the server returns a 200 OK response, parse the JSON
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Handle the data as needed
-        print(data);
 
         return data.map((i) => SortedMember.fromJson(i)).toList();
       } else {

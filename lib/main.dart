@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, curly_braces_in_flow_control_structures, unused_element, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, avoid_print
+// ignore_for_file: use_super_parameters, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, curly_braces_in_flow_control_structures, unused_element, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, avoid_print, deprecated_member_use
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,8 +13,7 @@ ApiMotorPower apiService = ApiMotorPower();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
-  if (message.body != null && message.body!.contains("خاموش"))
-    await apiService.turnOff();
+  if (message.body != null && message.body!.contains("خاموش")) await apiService.turnOff();
 }
 
 void main() {
@@ -25,9 +24,7 @@ class MyInheritedWidget extends InheritedWidget {
   final bool status;
   final dynamic updateData;
 
-  MyInheritedWidget(
-      { this.status = true, required this.updateData, required Widget child})
-      : super(child: child);
+  MyInheritedWidget({this.status = true, required this.updateData, required Widget child}) : super(child: child);
 
   static MyInheritedWidget? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
@@ -47,8 +44,7 @@ class MainPage extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         fontFamily: "Vazir",
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 7, 1, 55)),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
@@ -175,14 +171,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {
-                     Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>DragGroupPage(),
-                          ));
-
-        },child: Icon(Icons.edit),),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DragGroupPage(),
+                ));
+          },
+          child: Icon(Icons.edit),
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: selectedPageIndex,
           onDestinationSelected: (int index) {
@@ -222,8 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               Container(
-                padding:
-                    EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
+                padding: EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
                 child: Text(
                   'سامانه ی میرآب',
                   style: TextStyle(color: Colors.white, fontSize: 24),
@@ -247,8 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Text(
                         'خروج',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

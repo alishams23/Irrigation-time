@@ -6,7 +6,7 @@ class Group {
   final List<SortedMember> members;
   final bool isReverse;
   final bool isReversed;
-  final int sort;
+  int sort;
 
   Group({
     required this.id,
@@ -19,8 +19,7 @@ class Group {
 
   factory Group.fromJson(Map<String, dynamic> json) {
     var membersJson = json['members'] as List;
-    List<SortedMember> membersList =
-        membersJson.map((i) => SortedMember.fromJson(i)).toList();
+    List<SortedMember> membersList = membersJson.map((i) => SortedMember.fromJson(i)).toList();
 
     return Group(
       id: json['id'],

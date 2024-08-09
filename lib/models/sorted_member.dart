@@ -3,7 +3,6 @@ import 'package:time_sort/models/user.dart';
 class SortedMember {
   final int id;
   final User member;
-  final int sort;
   final int time;
   final int? year;
   final int? month;
@@ -11,6 +10,7 @@ class SortedMember {
   final int? hour;
   final int? minute;
   final bool? isOn;
+  int sort;
 
   SortedMember({
     required this.id,

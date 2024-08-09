@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/models/water_well.dart';
 
 class ApiMotorPower {
-  final String baseUrl = "http://192.168.1.107:8000/api";
+  final String baseUrl = "http://37.152.190.222/api";
 
   Future<String?> _getToken() async {
     // Obtain shared preferences.
@@ -82,6 +82,7 @@ class ApiMotorPower {
       ).timeout(const Duration(seconds: 4));
 
       if (response.statusCode == 200) {
+        print('[REQUEST CODE: 200]');
         // If the server returns a 200 OK response, parse the JSON
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Handle the data as needed
