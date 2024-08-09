@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:time_sort/main.dart';
 
 class CalendarCard extends StatelessWidget {
   final String fullName;
@@ -9,6 +10,7 @@ class CalendarCard extends StatelessWidget {
   final int hour;
   final int minute;
   final int duration;
+  final bool isOn;
 
   CalendarCard({
     required this.fullName,
@@ -17,6 +19,7 @@ class CalendarCard extends StatelessWidget {
     required this.hour,
     required this.minute,
     required this.duration,
+    required this.isOn,
   });
 
   @override
@@ -24,6 +27,7 @@ class CalendarCard extends StatelessWidget {
     // Ensure minute is always two digits
     String formattedMinute = minute.toString().padLeft(2, '0');
     String formattedHour = hour.toString().padLeft(2, '0');
+    final myInheritedWidget = MyInheritedWidget.of(context);
 
     return IntrinsicHeight(
       child: Row(
@@ -57,7 +61,7 @@ class CalendarCard extends StatelessWidget {
                     SizedBox(height: 8.0),
                     Row(
                       children: [
-                        Row(
+                       if( isOn == true) Row(
                           children: <Widget>[
                             Icon(
                               Icons.access_time,

@@ -6,7 +6,6 @@ class WaterWell {
   bool isOn;
   final bool isAdmin;
   final String startMember;
-  final String stopMember;
   final SortedMember currentMember;
   final SortedMember nextMember;
 
@@ -15,7 +14,6 @@ class WaterWell {
     required this.isOn,
     required this.isAdmin,
     required this.startMember,
-    required this.stopMember,
     required this.currentMember,
     required this.nextMember,
   });
@@ -26,7 +24,6 @@ class WaterWell {
       isOn: json['is_on'],
       isAdmin: json['is_admin'],
       startMember: json['start_member'],
-      stopMember: json['stop_member'],
       currentMember: SortedMember.fromJson(json['current_member']),
       nextMember: SortedMember.fromJson(json['next_member']),
     );

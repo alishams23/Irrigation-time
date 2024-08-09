@@ -57,9 +57,10 @@ class _PowerPageState extends State<PowerPage> {
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
                   Container(
-                    width: 300, // Adjust size if necessary
-                    height: 300, // Adjust size if necessary
+                    width: 360, // Adjust size if necessary
+                    height: 360, // Adjust size if necessary
                     margin: EdgeInsets.only(bottom: 50),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(300),
@@ -68,17 +69,17 @@ class _PowerPageState extends State<PowerPage> {
                         end: Alignment.bottomCenter,
                         colors: _motorStatus.isOn
                             ? [
-                                Color.fromARGB(1, 0, 0, 0),
-                                Color.fromARGB(39, 2, 189, 71)
+                                Color.fromARGB(39, 79, 95, 1),
+                                Color.fromARGB(39, 79, 95, 1)
                               ]
                             : [
-                                Color.fromARGB(1, 0, 0, 0),
+                                Color.fromARGB(39, 189, 2, 2),
                                 Color.fromARGB(39, 189, 2, 2)
                               ],
                       ),
                       border: Border.all(
-                        color: Color.fromARGB(44, 58, 30, 9),
-                        width: 20,
+                        color: Color.fromARGB(44, 0, 0, 0),
+                        width: 35,
                       ),
                     ),
                     child: Center(
@@ -128,19 +129,26 @@ class _PowerPageState extends State<PowerPage> {
                           }
                         },
                         child: Container(
+                          
                           width: 200, // Adjust size if necessary
                           height: 200, // Adjust size if necessary
                           decoration: BoxDecoration(
+                             border: Border(
+                                  top: BorderSide(
+                                    
+                                      color:_motorStatus.isOn
+                            ? Color.fromARGB(255, 127, 154, 16):const Color.fromARGB(255, 144, 35, 27),
+                                      width: 1)),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: _motorStatus.isOn
                                   ? [
-                                      Color.fromARGB(159, 5, 225, 60),
-                                      Color.fromARGB(236, 1, 76, 21)
+                                      Color.fromARGB(235, 57, 76, 1),
+                                      Color.fromARGB(235, 57, 76, 1)
                                     ]
                                   : [
-                                      Color.fromARGB(235, 199, 57, 0),
+                                      Color.fromARGB(239, 111, 1, 1),
                                       Color.fromARGB(239, 111, 1, 1)
                                     ],
                             ),
@@ -183,66 +191,83 @@ class _PowerPageState extends State<PowerPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(82, 38, 57, 57),
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border(
-                            top: BorderSide(
-                                color: Color.fromARGB(255, 37, 48, 45),
-                                width: 1))),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   
+                          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                     decoration: BoxDecoration(
+                              color: Color.fromARGB(82, 33, 39, 26),
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border(
+                                  top: BorderSide(
+                                    
+                                      color: Color.fromARGB(255, 39, 44, 38),
+                                      width: 1))),
+                    child: Column(
                       children: [
-                        Text(
-                          _motorStatus.currentMember.member.fullName,
-                          style: TextStyle(
-                              // color: Color.fromARGB(255, 188, 251, 192),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                          textDirection: TextDirection.rtl,
-                        ),
-                        Text(
-                          "نوبت آقای :  ",
-                          style: TextStyle(
-                            // color: Color.fromARGB(255, 166, 250, 170),
-                            fontSize: 18,
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(82, 56, 86, 17),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border(
+                                  top: BorderSide(
+                                      color: Color.fromARGB(255, 55, 73, 37),
+                                      width: 1))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _motorStatus.currentMember.member.fullName,
+                                style: TextStyle(
+                                    // color: Color.fromARGB(255, 188, 251, 192),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                                textDirection: TextDirection.rtl,
+                              ),
+                              Text(
+                                "نوبت آقای :  ",
+                                style: TextStyle(
+                                  // color: Color.fromARGB(255, 166, 250, 170),
+                                  fontSize: 18,
+                                ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
                           ),
-                          textDirection: TextDirection.rtl,
                         ),
-                      ],
+                     
+                     Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                  margin: EdgeInsets.only(left: 20, right: 20,bottom: 30),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _motorStatus.nextMember.member.fullName,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                      Text(
+                        "نفر بعد  :  ",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 194, 194, 194),
+                          fontSize: 17,
+                        ),
+                        textDirection: TextDirection.rtl,
+                      ),
+                    ],
+                  ),
+                                    )
+                   ],
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 60),
-                    margin: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          _motorStatus.nextMember.member.fullName,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 194, 194, 194),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                        Text(
-                          "نفر بعد  :  ",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 194, 194, 194),
-                            fontSize: 17,
-                          ),
-                          textDirection: TextDirection.rtl,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                                  ],
               )
             : Center(
                 child: CircularProgressIndicator(

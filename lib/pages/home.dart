@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                 hour: _membersList[i].hour!,
                 minute: _membersList[i].minute!,
                 duration: _membersList[i].time,
+                isOn: _membersList[i].isOn,
               ),
               dateTime: CalendarDateTime(
                 year: _membersList[i].year!,

@@ -10,6 +10,7 @@ class SortedMember {
   final int? day;
   final int? hour;
   final int? minute;
+  final bool? isOn;
 
   SortedMember({
     required this.id,
@@ -21,6 +22,7 @@ class SortedMember {
     this.day,
     this.hour,
     this.minute,
+    this.isOn,
   });
 
   factory SortedMember.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class SortedMember {
       day: json['day'],
       hour: json['hour'],
       minute: json['minute'],
+      isOn: json['is_on'],
     );
   }
 }

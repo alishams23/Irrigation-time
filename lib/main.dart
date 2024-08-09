@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 import 'package:time_sort/api/motor_power.dart';
+import 'package:time_sort/pages/drag_group.dart';
 import 'package:time_sort/pages/home.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
@@ -25,7 +26,7 @@ class MyInheritedWidget extends InheritedWidget {
   final dynamic updateData;
 
   MyInheritedWidget(
-      {required this.status, required this.updateData, required Widget child})
+      { this.status = true, required this.updateData, required Widget child})
       : super(child: child);
 
   static MyInheritedWidget? of(BuildContext context) {
@@ -174,6 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: () {
+                     Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>DragGroupPage(),
+                          ));
+
+        },child: Icon(Icons.edit),),
         bottomNavigationBar: NavigationBar(
           selectedIndex: selectedPageIndex,
           onDestinationSelected: (int index) {
