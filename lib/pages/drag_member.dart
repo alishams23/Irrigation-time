@@ -103,25 +103,30 @@ class _DragMemberPageState extends State<DragMemberPage> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title: Text('تغییر مدت زمان آبیاری'),
+                                            title: Text('تغییر مدت زمان آبیاری', textDirection: TextDirection.rtl),
                                             content: TextField(
                                               controller: minuteController,
+                                              textDirection:
+                                                  TextDirection.rtl, // Ensures the text inside the TextField is RTL
                                               keyboardType: TextInputType.number,
                                               decoration: InputDecoration(
-                                                labelText: 'مدت زمان آبیاری (دقیقه)',
+                                                labelText:
+                                                    'مدت زمان آبیاری (دقیقه)', // This will follow the textDirection of the TextField
                                                 hintText: 'عدد را وارد کنید',
+                                                hintTextDirection:
+                                                    TextDirection.rtl, // Ensure the hint text is also RTL
                                               ),
                                             ),
                                             actions: [
                                               TextButton(
-                                                child: Text('لغو'),
+                                                child: Text('لغو', textDirection: TextDirection.rtl),
                                                 onPressed: () {
                                                   minuteController = TextEditingController();
                                                   Navigator.of(context).pop();
                                                 },
                                               ),
                                               TextButton(
-                                                child: Text('ذخیره'),
+                                                child: Text('ذخیره', textDirection: TextDirection.rtl),
                                                 onPressed: () async {
                                                   int? minutes = int.tryParse(minuteController.text);
                                                   if (minutes != null) {
@@ -148,14 +153,16 @@ class _DragMemberPageState extends State<DragMemberPage> {
                                             title: Text('تغییر وضعیت به درحال آبیاری'),
                                             content: Column(
                                               mainAxisSize: MainAxisSize.min,
+                                              textDirection: TextDirection.rtl,
                                               children: [
-                                                Text(
-                                                    'آیا مطمئن هستید که می‌خواهید وضعیت را به "درحال آبیاری" تغییر دهید؟'),
                                                 SizedBox(height: 16.0),
                                                 TextField(
                                                   controller: minuteController,
                                                   keyboardType: TextInputType.number,
+                                                  textDirection: TextDirection.rtl,
                                                   decoration: InputDecoration(
+                                                    alignLabelWithHint: true,
+                                                    hintTextDirection: TextDirection.rtl,
                                                     labelText: 'مدت زمان گذشته از شروع آبیاری (دقیقه)',
                                                     hintText: 'عدد را وارد کنید',
                                                   ),
@@ -164,14 +171,14 @@ class _DragMemberPageState extends State<DragMemberPage> {
                                             ),
                                             actions: [
                                               TextButton(
-                                                child: Text('لغو'),
+                                                child: Text('لغو', textDirection: TextDirection.rtl),
                                                 onPressed: () {
                                                   minuteController = TextEditingController();
                                                   Navigator.of(context).pop();
                                                 },
                                               ),
                                               TextButton(
-                                                child: Text('تأیید'),
+                                                child: Text('تأیید', textDirection: TextDirection.rtl),
                                                 onPressed: () async {
                                                   int? minutes = int.tryParse(minuteController.text);
                                                   if (minutes != null) {
