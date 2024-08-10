@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = true;
         });
         final response = await http.post(
-          Uri.parse('http://37.152.190.222/api/account/login-sms/'),
+          Uri.parse('https://farmabyar.ir/api/account/login-sms/'),
           body: {'number': _phoneController.text},
         );
 
@@ -86,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     final response = await http.post(
-      Uri.parse('http://37.152.190.222/api/account/code_check/'),
+      Uri.parse('https://farmabyar.ir/api/account/code_check/'),
       body: {
         'number': _phoneController.text,
         'code': _codeController.text,

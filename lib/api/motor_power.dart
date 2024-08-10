@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/models/water_well.dart';
 
 class ApiMotorPower {
-  final String baseUrl = "http://37.152.190.222/api";
+  final String baseUrl = "https://farmabyar.ir/api";
 
   Future<String?> _getToken() async {
     // Obtain shared preferences.

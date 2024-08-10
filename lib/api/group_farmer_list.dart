@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/models/group.dart';
 
 class ApiSortGroupMemberList {
-  final String baseUrl = "http://37.152.190.222/api";
+  final String baseUrl = "http:///api";
 
   Future<String?> _getToken() async {
     // Obtain shared preferences.
