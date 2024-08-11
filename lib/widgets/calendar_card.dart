@@ -35,9 +35,9 @@ class CalendarCard extends StatelessWidget {
           Expanded(
             child: Card(
               color: status
-                  ? Color.fromARGB(255, 3, 111, 73)
+                  ? Color.fromARGB(255, 18, 93, 32)
                   : isFirst
-                      ? Color.fromARGB(170, 3, 111, 107)
+                      ? Color.fromARGB(255, 57, 76, 1)
                       : Color.fromARGB(255, 43, 42, 42),
               elevation: 4.0,
               margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
@@ -54,8 +54,8 @@ class CalendarCard extends StatelessWidget {
                       fullName,
                       textDirection: TextDirection.rtl,
                       style: TextStyle(
-                        fontSize: 20.0,
-                        // fontWeight: FontWeight.bold,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     SizedBox(height: 8.0),
@@ -103,13 +103,15 @@ class CalendarCard extends StatelessWidget {
           ),
           status == false
               ? Container(
-                  margin: EdgeInsets.only(right: 5, left: 10),
-                  width: 4,
+                  margin: EdgeInsets.only(right: 15, left: 5),
+                  width: 3,
                   color: Color.fromARGB(255, 52, 52, 52),
                 )
               : Container(
-                  height: 20,
-                  width: 20,
+                  height: 18,
+                  margin: EdgeInsets.only(right: 9, left: 0),
+
+                  width: 18,
                   decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(255, 3, 111, 73), width: 2),
                       borderRadius: BorderRadius.circular(40)),

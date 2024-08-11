@@ -248,14 +248,14 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
+                padding: EdgeInsets.only(top: 35, bottom: 35, left: 20, right: 20),
                 child: Text(
                   'آبیاری هوشمند',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                   textDirection: TextDirection.rtl,
                 ),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(170, 3, 111, 107),
+                  color: Color.fromARGB(170, 48, 111, 3),
                 ),
               ),
               GestureDetector(

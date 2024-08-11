@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
           selectedTextColor: Color.fromARGB(255, 255, 255, 255),
           weekDaySelectedColor: const Color.fromARGB(255, 255, 255, 255),
           eventCounterTextColor: Color.fromARGB(0, 250, 250, 250),
-          selectedBackgroundColor: Color.fromARGB(255, 3, 111, 73),
+          selectedBackgroundColor: Color.fromARGB(255, 57, 76, 1),
           eventCounterColor: Color.fromARGB(0, 244, 193, 253),
           disabledTextColor: const Color.fromARGB(255, 123, 123, 123),
           unselectedTextColor: Color.fromARGB(255, 209, 209, 209),
