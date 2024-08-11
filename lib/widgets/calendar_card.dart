@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:time_sort/main.dart';
@@ -61,22 +61,23 @@ class CalendarCard extends StatelessWidget {
                     SizedBox(height: 8.0),
                     Row(
                       children: [
-                       if( isOn == true) Row(
-                          children: <Widget>[
-                            Icon(
-                              Icons.access_time,
-                              size: 13,
-                            ),
-                            SizedBox(width: 8.0),
-                            Text(
-                              '$formattedHour:$formattedMinute:00',
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                // fontWeight: FontWeight.bold,
+                        if (isOn == true)
+                          Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.access_time,
+                                size: 13,
                               ),
-                            ),
-                          ],
-                        ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                '$formattedHour:$formattedMinute:00',
+                                style: TextStyle(
+                                  fontSize: 17.0,
+                                  // fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         SizedBox(width: 15.0),
                         Row(
                           children: <Widget>[
@@ -110,8 +111,7 @@ class CalendarCard extends StatelessWidget {
                   height: 20,
                   width: 20,
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Color.fromARGB(255, 3, 111, 73), width: 2),
+                      border: Border.all(color: Color.fromARGB(255, 3, 111, 73), width: 2),
                       borderRadius: BorderRadius.circular(40)),
                 ),
         ],

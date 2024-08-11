@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, curly_braces_in_flow_control_structures, unused_element, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, avoid_print, deprecated_member_use
+// ignore_for_file: use_super_parameters, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, curly_braces_in_flow_control_structures, unused_element, use_build_context_synchronously, prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, non_constant_identifier_names, avoid_print, deprecated_member_use, unnecessary_null_comparison
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +8,7 @@ import 'package:time_sort/pages/drag_group.dart';
 import 'package:time_sort/pages/home.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
+import 'package:time_sort/models/water_well.dart';
 
 ApiMotorPower apiService = ApiMotorPower();
 final Telephony telephony = Telephony.instance;
@@ -99,6 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _checkToken();
     _setupTelephony();
+    _getMotorStatus();
   }
 
   Future<void> _checkToken() async {
@@ -166,21 +168,49 @@ class _MyHomePageState extends State<MyHomePage> {
         false;
   }
 
+  ApiMotorPower apiService = ApiMotorPower();
+
+  WaterWell? _motorStatus;
+  Future<void> _getMotorStatus() async {
+    try {
+      _motorStatus = await apiService.getStatus();
+      setState(() {
+        _motorStatus = _motorStatus;
+      });
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'مشکلی در اتصال به اینترنت پیش آمده',
+            textDirection: TextDirection.rtl,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Example condition: Hide the FloatingActionButton on the second page
+    bool showFab = _motorStatus != null && _motorStatus!.isAdmin;
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DragGroupPage(),
-                ));
-          },
-          child: Icon(Icons.edit),
-        ),
+        floatingActionButton: showFab
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DragGroupPage(),
+                    ),
+                  );
+                },
+                child: Icon(Icons.edit),
+              )
+            : null, // Set to null when you want to hide the button
         bottomNavigationBar: NavigationBar(
           selectedIndex: selectedPageIndex,
           onDestinationSelected: (int index) {
@@ -190,9 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           destinations: const <NavigationDestination>[
             NavigationDestination(
-              selectedIcon: Icon(
-                Icons.electric_meter,
-              ),
+              selectedIcon: Icon(Icons.electric_meter),
               icon: Icon(Icons.electric_meter_outlined),
               label: 'وضعیت چاه',
             ),
@@ -208,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                'سامانه ی میرآب',
+                'آبیاری هوشمند',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               )
@@ -222,7 +250,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 padding: EdgeInsets.only(top: 40, bottom: 40, left: 20, right: 20),
                 child: Text(
-                  'سامانه ی میرآب',
+                  'آبیاری هوشمند',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                   textDirection: TextDirection.rtl,
                 ),

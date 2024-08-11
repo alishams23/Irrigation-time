@@ -33,9 +33,14 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = true;
         });
+
         final response = await http.post(
           Uri.parse('https://farmabyar.ir/api/account/login-sms/'),
           body: {'number': _phoneController.text},
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json; charset=UTF-8',
+          },
         );
 
         if (response.statusCode == 200) {
@@ -45,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           });
           startTimer(); // Start the timer when the code is sent
         } else {
-          final responseBody = json.decode(response.body);
+          final responseBody = json.decode(utf8.decode(response.bodyBytes));
           setState(() {
             _errorMessage = responseBody['error'] ?? 'Login failed';
             _isLoading = false;
