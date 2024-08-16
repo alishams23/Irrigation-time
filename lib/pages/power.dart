@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters, library_private_types_in_public_api, prefer_const_constructors_in_immutables, unnecessary_import, non_constant_identifier_names, avoid_print, use_build_context_synchronously, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:time_sort/main.dart';
 import 'package:time_sort/api/motor_power.dart';
 import 'package:time_sort/models/water_well.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class PowerPage extends StatefulWidget {
   PowerPage({
@@ -48,6 +48,39 @@ class _PowerPageState extends State<PowerPage> {
     }
   }
 
+  double _calculateProgress() {
+    final now = DateTime.now();
+
+    DateTime startTime = DateTime.parse(_motorStatus.startMember);
+    final duration = Duration(minutes: _motorStatus.currentMember.time);
+    final endTime = startTime.add(duration);
+
+    if (now.isBefore(startTime)) {
+      // Not started yet
+      return 0.0;
+    } else if (now.isAfter(endTime)) {
+      // Already finished
+      return 1.0;
+    } else {
+      // Currently in progress
+      final elapsed = now.difference(startTime);
+      return elapsed.inSeconds / duration.inSeconds;
+    }
+  }
+
+  DateTime parseDateTimeInTehran(String dateTimeString) {
+    // Parse the DateTime string (assume it's in UTC or with offset)
+    DateTime parsedDateTime = DateTime.parse(dateTimeString);
+
+    // Get the Asia/Tehran timezone
+    final tehranTimeZone = tz.getLocation('Asia/Tehran');
+
+    // Convert the parsed DateTime to the Tehran timezone
+    final tehranDateTime = tz.TZDateTime.from(parsedDateTime, tehranTimeZone);
+
+    return tehranDateTime;
+  }
+
   @override
   Widget build(BuildContext context) {
     final myInheritedWidget = MyInheritedWidget.of(context);
@@ -83,18 +116,10 @@ class _PowerPageState extends State<PowerPage> {
                               _isLoading = true;
                             });
 
-                            // Simulate API call delay
-                            // await Future.delayed(Duration(seconds: 2));
-                            // setState(() {
-                            //   _is_on = !_is_on;
-                            //   _isLoading = false;
-                            // });
                             await _getMotorStatus();
 
-                            // print('API ${await apiService.turnOff()}');
                             try {
                               if (_motorStatus.isOn) {
-                                // await apiService.turnOff();
                                 await apiService.turnOff();
                               } else {
                                 await apiService.turnOn();
@@ -185,25 +210,53 @@ class _PowerPageState extends State<PowerPage> {
                               color: Color.fromARGB(82, 56, 86, 17),
                               borderRadius: BorderRadius.circular(20),
                               border: Border(top: BorderSide(color: Color.fromARGB(255, 55, 73, 37), width: 1))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             children: [
-                              Text(
-                                _motorStatus.currentMember.member.fullName,
-                                style: TextStyle(
-                                    // color: Color.fromARGB(255, 188, 251, 192),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                                textDirection: TextDirection.rtl,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    _motorStatus.currentMember.member.fullName,
+                                    style: TextStyle(
+                                        // color: Color.fromARGB(255, 188, 251, 192),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                  Text(
+                                    "نوبت آقای :  ",
+                                    style: TextStyle(
+                                      // color: Color.fromARGB(255, 166, 250, 170),
+                                      fontSize: 18,
+                                    ),
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "نوبت آقای :  ",
-                                style: TextStyle(
-                                  // color: Color.fromARGB(255, 166, 250, 170),
-                                  fontSize: 18,
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4, right: 4, top: 13),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: LinearProgressIndicator(
+                                    value: _calculateProgress(),
+                                    backgroundColor: const Color.fromARGB(255, 9, 32, 11),
+                                    color: Colors.green,
+                                  ),
                                 ),
-                                textDirection: TextDirection.rtl,
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${DateTime.now().difference(DateTime.parse(_motorStatus.startMember)).inMinutes} دقیقه گذشته ',
+                                      textDirection: TextDirection.rtl,
+                                    ),
+                                    Text("${DateTime.parse(_motorStatus.startMember)}"),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         ),

@@ -86,6 +86,7 @@ class ApiMotorPower {
         // If the server returns a 200 OK response, parse the JSON
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Handle the data as needed
+        print(data);
         return WaterWell.fromJson(data);
       } else {
         // If the server did not return a 200 OK response, throw an exception
