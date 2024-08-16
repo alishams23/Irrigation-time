@@ -6,6 +6,7 @@ import 'package:telephony/telephony.dart';
 import 'package:time_sort/api/motor_power.dart';
 import 'package:time_sort/pages/drag_group.dart';
 import 'package:time_sort/pages/home.dart';
+import 'package:time_sort/pages/video.dart';
 import 'package:time_sort/pages/login.dart';
 import 'package:time_sort/pages/power.dart';
 import 'package:time_sort/models/water_well.dart';
@@ -88,10 +89,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedPageIndex = 0;
-  List pages = [
-    PowerPage(),
-    HomePage(),
-  ];
+  List pages = [PowerPage(), HomePage(), VideosPage()];
 
   bool is_on = true;
 
@@ -225,9 +223,14 @@ class _MyHomePageState extends State<MyHomePage> {
               label: 'وضعیت چاه',
             ),
             NavigationDestination(
-              selectedIcon: Icon(Icons.task_rounded),
-              icon: Icon(Icons.task_outlined),
+              selectedIcon: Icon(Icons.list_rounded),
+              icon: Icon(Icons.list_outlined),
               label: 'لیست نوبت',
+            ),
+            NavigationDestination(
+              selectedIcon: Icon(Icons.video_library_rounded),
+              icon: Icon(Icons.video_library_outlined),
+              label: 'نمایشگاه',
             ),
           ],
         ),

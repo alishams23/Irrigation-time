@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:time_sort/main.dart';
 import 'package:time_sort/api/motor_power.dart';
 import 'package:time_sort/models/water_well.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class PowerPage extends StatefulWidget {
   PowerPage({
@@ -51,7 +50,7 @@ class _PowerPageState extends State<PowerPage> {
   double _calculateProgress() {
     final now = DateTime.now();
 
-    DateTime startTime = DateTime.parse(_motorStatus.startMember);
+    DateTime startTime = DateTime.parse(_motorStatus.startMember).toLocal();
     final duration = Duration(minutes: _motorStatus.currentMember.time);
     final endTime = startTime.add(duration);
 
@@ -68,17 +67,12 @@ class _PowerPageState extends State<PowerPage> {
     }
   }
 
-  DateTime parseDateTimeInTehran(String dateTimeString) {
-    // Parse the DateTime string (assume it's in UTC or with offset)
-    DateTime parsedDateTime = DateTime.parse(dateTimeString);
+  DateTime _endTime() {
+    DateTime startTime = DateTime.parse(_motorStatus.startMember).toLocal();
+    final duration = Duration(minutes: _motorStatus.currentMember.time);
+    final endTime = startTime.add(duration);
 
-    // Get the Asia/Tehran timezone
-    final tehranTimeZone = tz.getLocation('Asia/Tehran');
-
-    // Convert the parsed DateTime to the Tehran timezone
-    final tehranDateTime = tz.TZDateTime.from(parsedDateTime, tehranTimeZone);
-
-    return tehranDateTime;
+    return endTime;
   }
 
   @override
@@ -250,10 +244,10 @@ class _PowerPageState extends State<PowerPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '${DateTime.now().difference(DateTime.parse(_motorStatus.startMember)).inMinutes} دقیقه گذشته ',
+                                      '${_endTime().difference(DateTime.now()).inMinutes} دقیقه باقی مانده ',
                                       textDirection: TextDirection.rtl,
                                     ),
-                                    Text("${DateTime.parse(_motorStatus.startMember)}"),
+                                    Text("${_endTime().hour}:${_endTime().minute}:00"),
                                   ],
                                 ),
                               )
