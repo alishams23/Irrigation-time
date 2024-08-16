@@ -37,12 +37,11 @@ class _PlayerPageState extends State<PlayerPage> {
       autoPlay: true,
       looping: true,
     );
-    _videoPlayerController
-      ..initialize().then((value) {
-        setState(() {
-          _videoPlayerController.play();
-        });
+    _videoPlayerController.initialize().then((value) {
+      setState(() {
+        _videoPlayerController.play();
       });
+    });
 
     setState(() {
       _loading = false;
@@ -56,6 +55,7 @@ class _PlayerPageState extends State<PlayerPage> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +67,7 @@ class _PlayerPageState extends State<PlayerPage> {
                 controller: _chewieController,
               ),
             )
-          : CircularProgressIndicator(),
+          : const CircularProgressIndicator(),
     );
   }
 }
