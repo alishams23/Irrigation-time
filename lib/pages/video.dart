@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_sort/api/videos.dart'; // Updated import based on the previous changes
 import 'package:time_sort/models/video.dart';
-import 'package:chewie/chewie.dart';
 import 'package:time_sort/pages/player.dart';
-import 'package:video_player/video_player.dart';
 
 class VideosPage extends StatefulWidget {
   VideosPage({

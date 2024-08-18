@@ -22,6 +22,17 @@ class CalendarCard extends StatelessWidget {
     required this.isOn,
   });
 
+  DateTime calculateEndTime(int hour, int minute, int duration) {
+    // Get the current date and replace the hour and minute
+    DateTime startTime = DateTime.now();
+    startTime = DateTime(startTime.year, startTime.month, startTime.day, hour, minute);
+
+    // Add the duration to the start time
+    final endTime = startTime.add(Duration(minutes: duration));
+
+    return endTime;
+  }
+
   @override
   Widget build(BuildContext context) {
     // Ensure minute is always two digits
@@ -58,19 +69,21 @@ class CalendarCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 8.0),
+                    !isFirst ? SizedBox(width: 8.0) : Container(),
                     Row(
                       children: [
                         if (isOn == true)
                           Row(
                             children: <Widget>[
-                              Icon(
-                                Icons.access_time,
-                                size: 13,
-                              ),
-                              SizedBox(width: 8.0),
+                              !isFirst
+                                  ? Icon(
+                                      Icons.access_time,
+                                      size: 13,
+                                    )
+                                  : Container(),
+                              !isFirst ? SizedBox(width: 8.0) : Container(),
                               Text(
-                                '$formattedHour:$formattedMinute:00',
+                                !isFirst ? '$formattedHour:$formattedMinute:00' : '',
                                 style: TextStyle(
                                   fontSize: 17.0,
                                   // fontWeight: FontWeight.bold,
@@ -78,7 +91,7 @@ class CalendarCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                        SizedBox(width: 15.0),
+                        !isFirst ? SizedBox(width: 15.0) : SizedBox(),
                         Row(
                           children: <Widget>[
                             Icon(Icons.timer, size: 13),
@@ -86,7 +99,10 @@ class CalendarCard extends StatelessWidget {
                               width: 8.0,
                             ),
                             Text(
-                              '$duration',
+                              !isFirst
+                                  ? '$duration دقیقه'
+                                  : '${calculateEndTime(hour, minute, duration).difference(DateTime.now()).inMinutes} دقیقه باقی مانده',
+                              textDirection: TextDirection.rtl,
                               style: TextStyle(
                                 // fontWeight: FontWeight.bold,
                                 fontSize: 17.0,
@@ -110,7 +126,6 @@ class CalendarCard extends StatelessWidget {
               : Container(
                   height: 18,
                   margin: EdgeInsets.only(right: 9, left: 0),
-
                   width: 18,
                   decoration: BoxDecoration(
                       border: Border.all(color: Color.fromARGB(255, 3, 111, 73), width: 2),

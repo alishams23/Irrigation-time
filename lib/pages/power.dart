@@ -75,6 +75,13 @@ class _PowerPageState extends State<PowerPage> {
     return endTime;
   }
 
+  int _offTime() {
+    DateTime startTime = DateTime.parse(_motorStatus.offTime).toLocal();
+    final now = DateTime.now();
+    int duration = now.difference(startTime).inMinutes;
+    return duration;
+  }
+
   @override
   Widget build(BuildContext context) {
     final myInheritedWidget = MyInheritedWidget.of(context);
@@ -114,9 +121,9 @@ class _PowerPageState extends State<PowerPage> {
 
                             try {
                               if (_motorStatus.isOn) {
-                                await apiService.turnOff();
+                                await apiService.turnOff(1);
                               } else {
-                                await apiService.turnOn();
+                                await apiService.turnOn(1);
                               }
                               setState(() {
                                 _motorStatus.isOn = !_motorStatus.isOn;
@@ -177,7 +184,8 @@ class _PowerPageState extends State<PowerPage> {
                                       ),
                                     ),
                               Text(
-                                _motorStatus.isOn ? "چاه روشن است" : "چاه خاموش است",
+                                _motorStatus.isOn ? "چاه روشن است" : "چاه از ${_offTime()} دقیقه پیش  \n خاموش شده است",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -247,7 +255,10 @@ class _PowerPageState extends State<PowerPage> {
                                       '${_endTime().difference(DateTime.now()).inMinutes} دقیقه باقی مانده ',
                                       textDirection: TextDirection.rtl,
                                     ),
-                                    Text("${_endTime().hour}:${_endTime().minute}:00"),
+                                    _motorStatus.isOn
+                                        ? Text(
+                                            "${_endTime().hour.toString().padLeft(2, '0')}:${_endTime().minute.toString().padLeft(2, '0')}:00")
+                                        : Container(),
                                   ],
                                 ),
                               )
