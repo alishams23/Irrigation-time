@@ -121,9 +121,9 @@ class _PowerPageState extends State<PowerPage> {
 
                             try {
                               if (_motorStatus.isOn) {
-                                await apiService.turnOff();
+                                await apiService.turnOff(null);
                               } else {
-                                await apiService.turnOn();
+                                await apiService.turnOn(null);
                               }
                               setState(() {
                                 _motorStatus.isOn = !_motorStatus.isOn;

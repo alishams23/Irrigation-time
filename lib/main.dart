@@ -15,7 +15,18 @@ ApiMotorPower apiService = ApiMotorPower();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
-  if (message.body != null && message.body!.contains("خاموش")) await apiService.turnOff();
+  if (message.body != null && message.body!.contains("خاموش")) {
+              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+              apiService.turnOff(id);
+      
+            }
+
+            if (message.body != null && message.body!.contains("روشن")) {
+              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+
+              apiService.turnOn(id);
+             
+            }
 }
 
 void main() {
@@ -118,14 +129,17 @@ class _MyHomePageState extends State<MyHomePage> {
         telephony.listenIncomingSms(
           onNewMessage: (SmsMessage message) {
             if (message.body != null && message.body!.contains("خاموش")) {
-              apiService.turnOff();
+              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+              apiService.turnOff(id);
               setState(() {
                 is_on = false;
               });
             }
 
             if (message.body != null && message.body!.contains("روشن")) {
-              apiService.turnOff();
+              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+
+              apiService.turnOn(id);
               setState(() {
                 is_on = true;
               });

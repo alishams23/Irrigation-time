@@ -14,7 +14,7 @@ class ApiMotorPower {
     return prefs.getString('token');
   }
 
-  Future<void> turnOff() async {
+  Future<void> turnOff(String? id ) async {
     print('[TURN OFF MOTOR API]');
     String? token = await _getToken();
     if (token == null) {
@@ -22,8 +22,9 @@ class ApiMotorPower {
     }
 
     try {
+      String url  =  id != null ? '$baseUrl/turn-off-water-well/$id/' : '$baseUrl/turn-off-water-well/';
       final response = await http.get(
-        Uri.parse('$baseUrl/turn-off-water-well/'),
+        Uri.parse(url),
         headers: {
           'Authorization': 'Token $token',
         },
@@ -40,7 +41,7 @@ class ApiMotorPower {
     }
   }
 
-  Future<void> turnOn() async {
+  Future<void> turnOn(String? id) async {
     print('[TURN ON MOTOR API]');
     String? token = await _getToken();
     if (token == null) {
@@ -48,8 +49,10 @@ class ApiMotorPower {
     }
 
     try {
+      String url  =  id != null ? '$baseUrl/turn-on-water-well/$id/' : '$baseUrl/turn-on-water-well/';
+
       final response = await http.get(
-        Uri.parse('$baseUrl/turn-on-water-well/'),
+        Uri.parse(url),
         headers: {
           'Authorization': 'Token $token',
         },
