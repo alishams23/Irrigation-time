@@ -22,15 +22,15 @@ class CalendarCard extends StatelessWidget {
     required this.isOn,
   });
 
-  DateTime calculateEndTime(int hour, int minute, int duration) {
+  int calculateEndTime(int hour, int minute, int duration) {
     // Get the current date and replace the hour and minute
+    final DateTime now = DateTime.now();
     DateTime startTime = DateTime.now();
     startTime = DateTime(startTime.year, startTime.month, startTime.day, hour, minute);
-
     // Add the duration to the start time
-    final endTime = startTime.add(Duration(minutes: duration));
-
-    return endTime;
+    DateTime endTime = startTime.add(Duration(minutes: duration));
+    int remindedTime = endTime.difference(now).inMinutes;
+    return remindedTime;
   }
 
   @override
@@ -101,7 +101,9 @@ class CalendarCard extends StatelessWidget {
                             Text(
                               !isFirst
                                   ? '$duration دقیقه'
-                                  : '${calculateEndTime(hour, minute, duration).difference(DateTime.now()).inMinutes} دقیقه باقی مانده',
+                                  : isOn
+                                      ? '${calculateEndTime(hour, minute, duration)} دقیقه باقی مانده'
+                                      : '$duration دقیقه',
                               textDirection: TextDirection.rtl,
                               style: TextStyle(
                                 // fontWeight: FontWeight.bold,

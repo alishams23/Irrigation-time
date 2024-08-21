@@ -16,17 +16,15 @@ final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
   if (message.body != null && message.body!.contains("خاموش")) {
-              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
-              apiService.turnOff(id);
-      
-            }
+    String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+    apiService.turnOff(id);
+  }
 
-            if (message.body != null && message.body!.contains("روشن")) {
-              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+  if (message.body != null && message.body!.contains("روشن")) {
+    String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
 
-              apiService.turnOn(id);
-             
-            }
+    apiService.turnOn(id);
+  }
 }
 
 void main() {
@@ -205,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // Example condition: Hide the FloatingActionButton on the second page
-    bool showFab = _motorStatus != null && _motorStatus!.isAdmin;
+    bool showFab = _motorStatus != null && _motorStatus!.isAdmin && selectedPageIndex != 2;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -213,6 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: showFab
             ? FloatingActionButton(
                 onPressed: () {
+                  print(selectedPageIndex);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -48,8 +48,12 @@ class _PowerPageState extends State<PowerPage> {
   }
 
   double _calculateProgress() {
-    final now = DateTime.now();
-
+    final DateTime now;
+    if (_motorStatus.isOn) {
+      now = DateTime.now();
+    } else {
+      now = DateTime.parse(_motorStatus.offTime).toLocal();
+    }
     DateTime startTime = DateTime.parse(_motorStatus.startMember).toLocal();
     final duration = Duration(minutes: _motorStatus.currentMember.time);
     final endTime = startTime.add(duration);
@@ -75,9 +79,23 @@ class _PowerPageState extends State<PowerPage> {
     return endTime;
   }
 
+  int _remindedTime() {
+    final DateTime now;
+    if (_motorStatus.isOn) {
+      now = DateTime.now();
+    } else {
+      now = DateTime.parse(_motorStatus.offTime).toLocal();
+    }
+    DateTime startTime = DateTime.parse(_motorStatus.startMember).toLocal();
+    final duration = Duration(minutes: _motorStatus.currentMember.time);
+    DateTime endTime = startTime.add(duration);
+    int remindedTime = endTime.difference(now).inMinutes;
+    return remindedTime;
+  }
+
   int _offTime() {
-    DateTime startTime = DateTime.parse(_motorStatus.offTime).toLocal();
     final now = DateTime.now();
+    DateTime startTime = DateTime.parse(_motorStatus.offTime).toLocal();
     int duration = now.difference(startTime).inMinutes;
     return duration;
   }
@@ -252,7 +270,7 @@ class _PowerPageState extends State<PowerPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      '${_endTime().difference(DateTime.now()).inMinutes} دقیقه باقی مانده ',
+                                      '${_remindedTime()} دقیقه باقی مانده ',
                                       textDirection: TextDirection.rtl,
                                     ),
                                     _motorStatus.isOn
