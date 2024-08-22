@@ -155,17 +155,13 @@ class _PowerPageState extends State<PowerPage> {
                                 _isLoading = true;
                               });
 
-                              await _getMotorStatus();
-
                               try {
                                 if (_motorStatus.isOn) {
                                   await apiService.turnOff(null);
                                 } else {
                                   await apiService.turnOn(null);
                                 }
-                                setState(() {
-                                  _motorStatus.isOn = !_motorStatus.isOn;
-                                });
+                                await _getMotorStatus();
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
