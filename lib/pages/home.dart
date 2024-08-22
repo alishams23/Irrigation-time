@@ -112,7 +112,10 @@ class _HomePageState extends State<HomePage> {
         eventOptions: EventOptions(
             showLoadingForEvent: () => _isLoading,
             loadingWidget: () {
-              return Center(child: CircularProgressIndicator());
+              return Center(
+                  child: CircularProgressIndicator(
+                color: Colors.green,
+              ));
             }),
         events: [
           for (int i = 0; i < _membersList.length; i++)

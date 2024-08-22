@@ -36,6 +36,7 @@ class _PowerPageState extends State<PowerPage> {
         _isLoading = false;
       });
     } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -124,14 +125,13 @@ class _PowerPageState extends State<PowerPage> {
     return Scaffold(
       body: Center(
         child: _isLoading == false
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 56.0), // Adjust padding as necessary
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Container(
-                      width: 360, // Adjust size if necessary
-                      height: 360, // Adjust size if necessary
+            ? ListView(
+                shrinkWrap: true,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 330, // Adjust size if necessary
+                      height: 330, // Adjust size if necessary
                       margin: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(300),
@@ -210,7 +210,7 @@ class _PowerPageState extends State<PowerPage> {
                                     ? Padding(
                                         padding: EdgeInsets.only(top: 20, bottom: 20),
                                         child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                                         ))
                                     : Padding(
                                         padding: EdgeInsets.only(top: 15, bottom: 10),
@@ -236,106 +236,136 @@ class _PowerPageState extends State<PowerPage> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(82, 33, 39, 26),
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border(top: BorderSide(color: Color.fromARGB(255, 39, 44, 38), width: 1))),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                            margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                            decoration: BoxDecoration(
-                                color: Color.fromARGB(82, 56, 86, 17),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border(top: BorderSide(color: Color.fromARGB(255, 55, 73, 37), width: 1))),
-                            child: Column(
-                              children: [
-                                Row(
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(82, 33, 39, 26),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border(top: BorderSide(color: Color.fromARGB(255, 39, 44, 38), width: 1))),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _motorStatus.previousMember != null
+                                    ? _motorStatus.previousMember!.member.fullName
+                                    : 'نامشخص',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                              Text(
+                                "نفر قبل  :  ",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 17,
+                                ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                          margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(82, 56, 86, 17),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border(top: BorderSide(color: Color.fromARGB(255, 55, 73, 37), width: 1))),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    _motorStatus.currentMember.member.fullName,
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                  Text(
+                                    "نوبت آقای :  ",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                    ),
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 4, right: 4, top: 13),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: LinearProgressIndicator(
+                                    value: _calculateProgress(),
+                                    backgroundColor: const Color.fromARGB(255, 9, 32, 11),
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      _motorStatus.currentMember.member.fullName,
-                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                      '${_remindedTime()} دقیقه باقی مانده ',
                                       textDirection: TextDirection.rtl,
                                     ),
-                                    Text(
-                                      "نوبت آقای :  ",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      ),
-                                      textDirection: TextDirection.rtl,
-                                    ),
+                                    _motorStatus.isOn
+                                        ? Text(
+                                            "${_endTime().hour.toString().padLeft(2, '0')}:${_endTime().minute.toString().padLeft(2, '0')}:00 تا")
+                                        : Container(),
                                   ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 4, right: 4, top: 13),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: LinearProgressIndicator(
-                                      value: _calculateProgress(),
-                                      backgroundColor: const Color.fromARGB(255, 9, 32, 11),
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${_remindedTime()} دقیقه باقی مانده ',
-                                        textDirection: TextDirection.rtl,
-                                      ),
-                                      _motorStatus.isOn
-                                          ? Text(
-                                              "${_endTime().hour.toString().padLeft(2, '0')}:${_endTime().minute.toString().padLeft(2, '0')}:00")
-                                          : Container(),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                            margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  _motorStatus.nextMember.member.fullName,
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 194, 194, 194),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textDirection: TextDirection.rtl,
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                          margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _motorStatus.nextMember.member.fullName,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  "نفر بعد  :  ",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 194, 194, 194),
-                                    fontSize: 17,
-                                  ),
-                                  textDirection: TextDirection.rtl,
+                                textDirection: TextDirection.rtl,
+                              ),
+                              Text(
+                                "نفر بعد  :  ",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 194, 194, 194),
+                                  fontSize: 17,
                                 ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(padding: const EdgeInsets.only(bottom: 56.0))
+                ],
               )
             : Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                 ),
               ),
       ),

@@ -9,6 +9,7 @@ class WaterWell {
   final String startMember;
   final SortedMember currentMember;
   final SortedMember nextMember;
+  final SortedMember? previousMember;
 
   WaterWell({
     required this.id,
@@ -18,6 +19,7 @@ class WaterWell {
     required this.startMember,
     required this.currentMember,
     required this.nextMember,
+    this.previousMember,
   });
 
   factory WaterWell.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class WaterWell {
       startMember: json['start_member'],
       currentMember: SortedMember.fromJson(json['current_member']),
       nextMember: SortedMember.fromJson(json['next_member']),
+      previousMember: json['previous_member'] == null ? null : SortedMember.fromJson(json['previous_member']),
     );
   }
 }
