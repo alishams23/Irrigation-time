@@ -211,7 +211,6 @@ class _MyHomePageState extends State<MyHomePage> {
         floatingActionButton: showFab
             ? FloatingActionButton(
                 onPressed: () {
-                  print(selectedPageIndex);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -14,7 +14,7 @@ class ApiFutureFarmers {
     return prefs.getString('token');
   }
 
-  Future<List> getFarmers() async {
+  Future<List<SortedMember>> getFarmers() async {
     print('[GET FARMER API]');
     String? token = await _getToken();
     if (token == null) {
@@ -31,13 +31,11 @@ class ApiFutureFarmers {
 
       if (response.statusCode == 200) {
         print('[REQUEST CODE: 200]');
-        // If the server returns a 200 OK response, parse the JSON
-        var data = jsonDecode(utf8.decode(response.bodyBytes));
-        // Handle the data as needed
-
+        // Parse the JSON response
+        var data = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+        // Convert the list of dynamic maps to a list of SortedMember objects
         return data.map((i) => SortedMember.fromJson(i)).toList();
       } else {
-        // If the server did not return a 200 OK response, throw an exception
         throw Exception('Failed to load user data');
       }
     } on Exception catch (e) {

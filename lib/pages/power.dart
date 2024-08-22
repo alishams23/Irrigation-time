@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, use_super_parameters, library_private_types_in_public_api, prefer_const_constructors_in_immutables, unnecessary_import, non_constant_identifier_names, avoid_print, use_build_context_synchronously, prefer_const_literals_to_create_immutables
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:time_sort/main.dart';
@@ -35,7 +36,6 @@ class _PowerPageState extends State<PowerPage> {
         _isLoading = false;
       });
     } catch (e) {
-      print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -81,15 +81,33 @@ class _PowerPageState extends State<PowerPage> {
 
   int _remindedTime() {
     final DateTime now;
+
     if (_motorStatus.isOn) {
       now = DateTime.now();
     } else {
       now = DateTime.parse(_motorStatus.offTime).toLocal();
     }
+
     DateTime startTime = DateTime.parse(_motorStatus.startMember).toLocal();
+
+    // Set seconds and microseconds to zero for 'startTime'
+    startTime = DateTime(startTime.year, startTime.month, startTime.day, startTime.hour, startTime.minute, 0, 0);
+
     final duration = Duration(minutes: _motorStatus.currentMember.time);
+
+    // Add duration to startTime and ensure endTime also has seconds and microseconds set to zero
     DateTime endTime = startTime.add(duration);
+    endTime = DateTime(endTime.year, endTime.month, endTime.day, endTime.hour, endTime.minute, 0, 0);
+
     int remindedTime = endTime.difference(now).inMinutes;
+
+    if (kDebugMode) {
+      print('Start Time: $startTime');
+      print('Current Time (Adjusted): $now');
+      print('End Time: $endTime');
+      print('Reminded Time: $remindedTime minutes');
+    }
+
     return remindedTime;
   }
 
@@ -149,7 +167,6 @@ class _PowerPageState extends State<PowerPage> {
                                   _motorStatus.isOn = !_motorStatus.isOn;
                                 });
                               } catch (e) {
-                                print(e);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(

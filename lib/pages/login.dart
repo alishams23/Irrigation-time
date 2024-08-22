@@ -104,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
       });
       final responseBody = json.decode(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      print(responseBody);
       await prefs.setString('token', responseBody['token']);
       await prefs.setString('username', responseBody['username']);
       await prefs.setString('status', responseBody['status']);

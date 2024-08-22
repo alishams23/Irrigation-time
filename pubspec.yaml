@@ -46,6 +46,7 @@ dependencies:
   # flutter_launcher_icons: ^0.13.1
   chewie: ^1.8.3
   video_player: ^2.9.1
+  shamsi_date: 0.15.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../flutter_event_calendar.dart';
 
@@ -43,7 +44,9 @@ class CalendarDateTime {
           second: timePart.length == 3 ? double.parse(timePart[2]).toInt() : 0,
           calendarType: calendarType);
     } on Exception catch (e) {
-      print("${e.toString()}");
+      if (kDebugMode) {
+        print(e.toString());
+      }
       return null;
     }
   }
@@ -59,7 +62,9 @@ class CalendarDateTime {
           day: int.parse(datePart[2]),
           calendarType: calendarType);
     } on Exception catch (e) {
-      print("${e.toString()}");
+      if (kDebugMode) {
+        print(e.toString());
+      }
       return null;
     }
   }

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_super_parameters, avoid_unnecessary_containers, use_build_context_synchronously, avoid_print
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_event_calendar/flutter_event_calendar.dart';
 // import 'package:flutter_event_calendar/flutter_event_calendar.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_event_calendar/flutter_event_calendar.dart';
 // import 'package:time_sort/widgets/event_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_sort/api/future_farmers.dart';
+import 'package:time_sort/models/sorted_member.dart';
 import 'package:time_sort/widgets/calendar_card.dart';
 // import 'package:time_sort/widgets/event_calendar.dart';
 
@@ -25,7 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   bool _isLoading = true; // Loading state
   String? username;
-  List _membersList = [];
+  List<SortedMember> _membersList = [];
 
   @override
   void initState() {
@@ -34,18 +36,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _getMembers() async {
+    setState(() {
+      _isLoading = true; // Start the loading state
+    });
+
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       username = prefs.getString('username');
 
-      _membersList = await apiService.getFarmers();
+      // Fetch the members
+      List<SortedMember> members = await apiService.getFarmers();
+
+      // Update the state with the fetched members
       setState(() {
-        _membersList = _membersList;
+        _membersList = members;
         _isLoading = false;
       });
     } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (kDebugMode) {
+        print(e);
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
             'مشکلی در اتصال به اینترنت پیش آمده',
             textDirection: TextDirection.rtl,
@@ -107,7 +124,10 @@ class _HomePageState extends State<HomePage> {
                 hour: _membersList[i].hour!,
                 minute: _membersList[i].minute!,
                 duration: _membersList[i].time,
-                isOn: _membersList[i].isOn,
+                isOn: _membersList[i].isOn!,
+                day: _membersList[i].day!,
+                month: _membersList[i].month!,
+                year: _membersList[i].year!,
               ),
               dateTime: CalendarDateTime(
                 year: _membersList[i].year!,

@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unused_local_variable
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:time_sort/main.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 class CalendarCard extends StatelessWidget {
   final String fullName;
@@ -11,6 +13,9 @@ class CalendarCard extends StatelessWidget {
   final int minute;
   final int duration;
   final bool isOn;
+  final int day;
+  final int month;
+  final int year;
 
   CalendarCard({
     required this.fullName,
@@ -20,16 +25,33 @@ class CalendarCard extends StatelessWidget {
     required this.minute,
     required this.duration,
     required this.isOn,
+    required this.day,
+    required this.month,
+    required this.year,
   });
 
   int calculateEndTime(int hour, int minute, int duration) {
-    // Get the current date and replace the hour and minute
-    final DateTime now = DateTime.now();
-    DateTime startTime = DateTime.now();
-    startTime = DateTime(startTime.year, startTime.month, startTime.day, hour, minute);
+    // Convert the given Jalali date to a Gregorian date
+    final Jalali jalaliStart = Jalali(year, month, day);
+    final Gregorian gregorianStart = jalaliStart.toGregorian();
+
+    // Create the start time in Gregorian calendar
+    DateTime startTime = DateTime(gregorianStart.year, gregorianStart.month, gregorianStart.day, hour, minute);
+
     // Add the duration to the start time
     DateTime endTime = startTime.add(Duration(minutes: duration));
-    int remindedTime = endTime.difference(now).inMinutes;
+
+    // Calculate the difference in minutes between the end time and the current time
+    int remindedTime = endTime.difference(DateTime.now()).inMinutes;
+
+    // For debugging: Print the start time, current time, and end time
+    if (kDebugMode) {
+      print('Start Time (Gregorian): $startTime');
+      print('Current Time (Gregorian): ${DateTime.now()}');
+      print('End Time (Gregorian): $endTime');
+      print('Reminded Time (minutes): $remindedTime');
+    }
+
     return remindedTime;
   }
 

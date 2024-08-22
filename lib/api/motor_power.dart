@@ -14,7 +14,7 @@ class ApiMotorPower {
     return prefs.getString('token');
   }
 
-  Future<void> turnOff(String? id ) async {
+  Future<void> turnOff(String? id) async {
     print('[TURN OFF MOTOR API]');
     String? token = await _getToken();
     if (token == null) {
@@ -22,7 +22,7 @@ class ApiMotorPower {
     }
 
     try {
-      String url  =  id != null ? '$baseUrl/turn-off-water-well/$id/' : '$baseUrl/turn-off-water-well/';
+      String url = id != null ? '$baseUrl/turn-off-water-well/$id/' : '$baseUrl/turn-off-water-well/';
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -49,7 +49,7 @@ class ApiMotorPower {
     }
 
     try {
-      String url  =  id != null ? '$baseUrl/turn-on-water-well/$id/' : '$baseUrl/turn-on-water-well/';
+      String url = id != null ? '$baseUrl/turn-on-water-well/$id/' : '$baseUrl/turn-on-water-well/';
 
       final response = await http.get(
         Uri.parse(url),
@@ -89,7 +89,6 @@ class ApiMotorPower {
         // If the server returns a 200 OK response, parse the JSON
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Handle the data as needed
-        print(data);
         return WaterWell.fromJson(data);
       } else {
         // If the server did not return a 200 OK response, throw an exception
