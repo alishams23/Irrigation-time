@@ -15,15 +15,28 @@ ApiMotorPower apiService = ApiMotorPower();
 final Telephony telephony = Telephony.instance;
 
 backgroundMessageHandler(SmsMessage message) async {
-  if (message.body != null && message.body!.contains("خاموش")) {
-    String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
-    apiService.turnOff(id);
-  }
+  // Check if the message body is not null
+  if (message.body != null) {
+    String? id;
 
-  if (message.body != null && message.body!.contains("روشن")) {
-    String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+    // Match "ورودی 3" or "ch 2"
+    if (message.body!.contains("ورودی")) {
+      id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)?.group(0);
+    } else if (message.body!.toLowerCase().contains("ch")) {
+      id = RegExp(r'(?<=' + RegExp.escape("ch") + r'\s*)\d+').firstMatch(message.body!)?.group(0);
+    }
 
-    apiService.turnOn(id);
+    if (id != null) {
+      // Match "خاموش" or "off"
+      if (message.body!.contains("خاموش") || message.body!.toLowerCase().contains("off")) {
+        await apiService.turnOff(id);
+      }
+
+      // Match "روشن" or "on"
+      else if (message.body!.contains("روشن") || message.body!.toLowerCase().contains("on")) {
+        await apiService.turnOn(id);
+      }
+    }
   }
 }
 
@@ -126,21 +139,33 @@ class _MyHomePageState extends State<MyHomePage> {
       if (permissionsGranted != null && permissionsGranted) {
         telephony.listenIncomingSms(
           onNewMessage: (SmsMessage message) {
-            if (message.body != null && message.body!.contains("خاموش")) {
-              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
-              apiService.turnOff(id);
-              setState(() {
-                is_on = false;
-              });
-            }
+            if (message.body != null) {
+              String? id;
 
-            if (message.body != null && message.body!.contains("روشن")) {
-              String? id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)!.group(0);
+              // Check for Persian "ورودی" or English "ch"
+              if (message.body!.contains("ورودی")) {
+                id = RegExp(r'(?<=' + RegExp.escape("ورودی") + r'\s*)\d+').firstMatch(message.body!)?.group(0);
+              } else if (message.body!.toLowerCase().contains("ch")) {
+                id = RegExp(r'(?<=' + RegExp.escape("ch") + r'\s*)\d+').firstMatch(message.body!)?.group(0);
+              }
 
-              apiService.turnOn(id);
-              setState(() {
-                is_on = true;
-              });
+              if (id != null) {
+                // Check for Persian "خاموش" or English "off"
+                if (message.body!.contains("خاموش") || message.body!.toLowerCase().contains("off")) {
+                  apiService.turnOff(id);
+                  setState(() {
+                    is_on = false;
+                  });
+                }
+
+                // Check for Persian "روشن" or English "on"
+                else if (message.body!.contains("روشن") || message.body!.toLowerCase().contains("on")) {
+                  apiService.turnOn(id);
+                  setState(() {
+                    is_on = true;
+                  });
+                }
+              }
             }
           },
           onBackgroundMessage: backgroundMessageHandler,
