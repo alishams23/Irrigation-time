@@ -39,7 +39,7 @@ class _DragMemberPageState extends State<DragMemberPage> {
     }
   }
 
-  Future<void> _updateWaterWellCurrentMember(String currentMember, int startMember) async {
+  Future<void> _updateWaterWellCurrentMember(int currentMember, int startMember) async {
     try {
       setState(() {
         _loading = true;
@@ -184,7 +184,7 @@ class _DragMemberPageState extends State<DragMemberPage> {
                                                   if (minutes != null) {
                                                     // Perform the status change operation and use the minutes value
                                                     Navigator.of(context).pop();
-                                                    await _updateWaterWellCurrentMember(item.member.username, minutes);
+                                                    await _updateWaterWellCurrentMember(item.id, minutes);
                                                     // Use the `minutes` value as needed for the irrigation process
                                                   } else {
                                                     // Handle the case where the input is not a valid number

@@ -139,7 +139,7 @@ class ApiSortGroupMemberList {
     }
   }
 
-  Future<void> updateWaterWellCurrentMember(String currentMember, int startMember) async {
+  Future<void> updateWaterWellCurrentMember(int currentMember, int startMember) async {
     print('[UPDATE WATER WELL CURRENT MEMBER API]');
     print('Current Member: $currentMember, Start Member: $startMember');
 
