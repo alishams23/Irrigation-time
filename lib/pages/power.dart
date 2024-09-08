@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:time_sort/main.dart';
+// import 'package:time_sort/main.dart';
 import 'package:time_sort/api/motor_power.dart';
 import 'package:time_sort/models/water_well.dart';
 
@@ -121,7 +121,7 @@ class _PowerPageState extends State<PowerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final myInheritedWidget = MyInheritedWidget.of(context);
+    // final myInheritedWidget = MyInheritedWidget.of(context);
     return Scaffold(
       body: Center(
         child: _isLoading == false
@@ -150,35 +150,35 @@ class _PowerPageState extends State<PowerPage> {
                       child: Center(
                         child: GestureDetector(
                           onTap: () async {
-                            if (_isLoading == false && _motorStatus.isAdmin) {
-                              setState(() {
-                                _isLoading = true;
-                              });
+                            // if (_isLoading == false && _motorStatus.isAdmin) {
+                            //   setState(() {
+                            //     _isLoading = true;
+                            //   });
 
-                              try {
-                                if (_motorStatus.isOn) {
-                                  await apiService.turnOff(null);
-                                } else {
-                                  await apiService.turnOn(null);
-                                }
-                                await _getMotorStatus();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'مشکلی پیش آمده لطفا دوباره امتحان کنید',
-                                      textDirection: TextDirection.rtl,
-                                    ),
-                                  ),
-                                );
-                              } finally {
-                                setState(() {
-                                  _isLoading = false;
-                                });
-                              }
+                            //   try {
+                            //     if (_motorStatus.isOn) {
+                            //       await apiService.turnOff(null);
+                            //     } else {
+                            //       await apiService.turnOn(null);
+                            //     }
+                            //     await _getMotorStatus();
+                            //   } catch (e) {
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //       SnackBar(
+                            //         content: Text(
+                            //           'مشکلی پیش آمده لطفا دوباره امتحان کنید',
+                            //           textDirection: TextDirection.rtl,
+                            //         ),
+                            //       ),
+                            //     );
+                            //   } finally {
+                            //     setState(() {
+                            //       _isLoading = false;
+                            //     });
+                            //   }
 
-                              myInheritedWidget!.updateData(_motorStatus.isOn);
-                            }
+                            //   myInheritedWidget!.updateData(_motorStatus.isOn);
+                            // }
                           },
                           child: Container(
                             width: 200, // Adjust size if necessary
