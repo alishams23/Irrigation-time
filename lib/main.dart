@@ -114,6 +114,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List pages = [PowerPage(), HomePage(), VideosPage()];
 
   bool is_on = true;
+  String? phone_number = '';
+  String? full_name = '';
 
   @override
   void initState() {
@@ -121,6 +123,13 @@ class _MyHomePageState extends State<MyHomePage> {
     _checkToken();
     _setupTelephony();
     _getMotorStatus();
+    _set_number();
+  }
+
+  Future<void> _set_number() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    phone_number = prefs.getString('phone_number');
+    full_name = prefs.getString('full_name');
   }
 
   Future<void> _checkToken() async {
@@ -177,6 +186,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
+    await prefs.remove('username');
+    await prefs.remove('status');
+    await prefs.remove('phone_number');
+    await prefs.remove('is_admin');
+    await prefs.remove('full_name');
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
@@ -243,7 +257,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   );
                 },
-                child: Icon(Icons.edit),
+                child: _motorStatus!.isAdmin ? Icon(Icons.edit) : Icon(Icons.visibility),
               )
             : null, // Set to null when you want to hide the button
         bottomNavigationBar: NavigationBar(
@@ -288,12 +302,31 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 35, bottom: 35, left: 20, right: 20),
-                child: Text(
-                  'آبیاری هوشمند',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                  textDirection: TextDirection.rtl,
-                ),
+                padding: EdgeInsets.only(top: 75, bottom: 10, left: 20, right: 20),
+                child: phone_number != null
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          full_name != null
+                              ? Text(
+                                  full_name!,
+                                  style: TextStyle(color: Colors.white, fontSize: 20),
+                                  textDirection: TextDirection.rtl,
+                                )
+                              : Container(),
+                          Text(
+                            phone_number!,
+                            style: TextStyle(color: const Color.fromARGB(124, 255, 255, 255), fontSize: 18),
+                            textDirection: TextDirection.rtl,
+                          ),
+                        ],
+                      )
+                    : Text(
+                        "آبیاری هوشمند",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                        textDirection: TextDirection.rtl,
+                      ),
                 decoration: BoxDecoration(
                   color: Color.fromARGB(170, 48, 111, 3),
                 ),

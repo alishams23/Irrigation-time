@@ -61,54 +61,62 @@ class _VideosPageState extends State<VideosPage> {
     return Scaffold(
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              shrinkWrap: true,
-              itemCount: _videosList.length,
-              itemBuilder: (context, index) {
-                final video = _videosList[index];
-                return GestureDetector(
-                  onTap: () => _openVideo(video),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 20,
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    video.image,
-                                  ),
-                                  fit: BoxFit.cover)),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                video.title,
-                                textDirection: TextDirection.rtl,
-                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        )
-                      ],
-                    ),
+          : _videosList.isEmpty
+              ? Center(
+                  child: Text(
+                    'اطلاعاتی  برای نمایش وجود ندارد',
+                    textDirection: TextDirection.rtl,
+                    style: TextStyle(fontSize: 24),
                   ),
-                );
-              },
-            ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _videosList.length,
+                  itemBuilder: (context, index) {
+                    final video = _videosList[index];
+                    return GestureDetector(
+                      onTap: () => _openVideo(video),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                        video.image,
+                                      ),
+                                      fit: BoxFit.cover)),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    video.title,
+                                    textDirection: TextDirection.rtl,
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

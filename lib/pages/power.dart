@@ -19,6 +19,8 @@ class _PowerPageState extends State<PowerPage> {
   ApiMotorPower apiService = ApiMotorPower();
 
   bool _isLoading = true; // Loading state
+  bool _is_aqueduct = false; // Loading state
+  String _address = ''; // Loading state
 
   late WaterWell _motorStatus;
 
@@ -33,6 +35,8 @@ class _PowerPageState extends State<PowerPage> {
       _motorStatus = await apiService.getStatus();
       setState(() {
         _motorStatus = _motorStatus;
+        _address = _motorStatus.address;
+        _is_aqueduct = _motorStatus.isAqueduct;
         _isLoading = false;
       });
     } catch (e) {
@@ -128,111 +132,136 @@ class _PowerPageState extends State<PowerPage> {
             ? ListView(
                 shrinkWrap: true,
                 children: [
-                  Center(
-                    child: Container(
-                      width: 330, // Adjust size if necessary
-                      height: 330, // Adjust size if necessary
-                      margin: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(300),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: _motorStatus.isOn
-                              ? [Color.fromARGB(39, 79, 95, 1), Color.fromARGB(39, 79, 95, 1)]
-                              : [Color.fromARGB(39, 189, 2, 2), Color.fromARGB(39, 189, 2, 2)],
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(0, 31, 48, 9),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border(top: BorderSide(color: Color.fromARGB(0, 46, 60, 32), width: 1))),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              _address,
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ],
                         ),
-                        border: Border.all(
-                          color: Color.fromARGB(44, 0, 0, 0),
-                          width: 35,
-                        ),
-                      ),
-                      child: Center(
-                        child: GestureDetector(
-                          onTap: () async {
-                            // if (_isLoading == false && _motorStatus.isAdmin) {
-                            //   setState(() {
-                            //     _isLoading = true;
-                            //   });
-
-                            //   try {
-                            //     if (_motorStatus.isOn) {
-                            //       await apiService.turnOff(null);
-                            //     } else {
-                            //       await apiService.turnOn(null);
-                            //     }
-                            //     await _getMotorStatus();
-                            //   } catch (e) {
-                            //     ScaffoldMessenger.of(context).showSnackBar(
-                            //       SnackBar(
-                            //         content: Text(
-                            //           'مشکلی پیش آمده لطفا دوباره امتحان کنید',
-                            //           textDirection: TextDirection.rtl,
-                            //         ),
-                            //       ),
-                            //     );
-                            //   } finally {
-                            //     setState(() {
-                            //       _isLoading = false;
-                            //     });
-                            //   }
-
-                            //   myInheritedWidget!.updateData(_motorStatus.isOn);
-                            // }
-                          },
+                      ],
+                    ),
+                  ),
+                  _is_aqueduct == false
+                      ? Center(
                           child: Container(
-                            width: 200, // Adjust size if necessary
-                            height: 200, // Adjust size if necessary
+                            width: 330, // Adjust size if necessary
+                            height: 330, // Adjust size if necessary
+                            margin: EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      color: _motorStatus.isOn
-                                          ? Color.fromARGB(255, 127, 154, 16)
-                                          : const Color.fromARGB(255, 144, 35, 27),
-                                      width: 1)),
+                              borderRadius: BorderRadius.circular(300),
                               gradient: LinearGradient(
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: _motorStatus.isOn
-                                    ? [Color.fromARGB(235, 57, 76, 1), Color.fromARGB(235, 57, 76, 1)]
-                                    : [Color.fromARGB(239, 111, 1, 1), Color.fromARGB(239, 111, 1, 1)],
+                                    ? [Color.fromARGB(39, 79, 95, 1), Color.fromARGB(39, 79, 95, 1)]
+                                    : [Color.fromARGB(39, 189, 2, 2), Color.fromARGB(39, 189, 2, 2)],
                               ),
-                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(
+                                color: Color.fromARGB(44, 0, 0, 0),
+                                width: 35,
+                              ),
                             ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                _isLoading
-                                    ? Padding(
-                                        padding: EdgeInsets.only(top: 20, bottom: 20),
-                                        child: CircularProgressIndicator(
-                                          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                                        ))
-                                    : Padding(
-                                        padding: EdgeInsets.only(top: 15, bottom: 10),
-                                        child: Icon(
-                                          Icons.power_settings_new_rounded,
-                                          size: 50,
+                            child: Center(
+                              child: GestureDetector(
+                                onTap: () async {
+                                  print(_motorStatus.fullName);
+                                  // if (_isLoading == false && _motorStatus.isAdmin) {
+                                  //   setState(() {
+                                  //     _isLoading = true;
+                                  //   });
+
+                                  //   try {
+                                  //     if (_motorStatus.isOn) {
+                                  //       await apiService.turnOff(null);
+                                  //     } else {
+                                  //       await apiService.turnOn(null);
+                                  //     }
+                                  //     await _getMotorStatus();
+                                  //   } catch (e) {
+                                  //     ScaffoldMessenger.of(context).showSnackBar(
+                                  //       SnackBar(
+                                  //         content: Text(
+                                  //           'مشکلی پیش آمده لطفا دوباره امتحان کنید',
+                                  //           textDirection: TextDirection.rtl,
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   } finally {
+                                  //     setState(() {
+                                  //       _isLoading = false;
+                                  //     });
+                                  //   }
+
+                                  //   myInheritedWidget!.updateData(_motorStatus.isOn);
+                                  // }
+                                },
+                                child: Container(
+                                  width: 200, // Adjust size if necessary
+                                  height: 200, // Adjust size if necessary
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: _motorStatus.isOn
+                                                ? Color.fromARGB(255, 127, 154, 16)
+                                                : const Color.fromARGB(255, 144, 35, 27),
+                                            width: 1)),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: _motorStatus.isOn
+                                          ? [Color.fromARGB(235, 57, 76, 1), Color.fromARGB(235, 57, 76, 1)]
+                                          : [Color.fromARGB(239, 111, 1, 1), Color.fromARGB(239, 111, 1, 1)],
+                                    ),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      _isLoading
+                                          ? Padding(
+                                              padding: EdgeInsets.only(top: 20, bottom: 20),
+                                              child: CircularProgressIndicator(
+                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                                              ))
+                                          : Padding(
+                                              padding: EdgeInsets.only(top: 15, bottom: 10),
+                                              child: Icon(
+                                                Icons.power_settings_new_rounded,
+                                                size: 50,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                      Text(
+                                        _motorStatus.isOn
+                                            ? "چاه روشن است"
+                                            : "چاه از ${_offTime()} دقیقه پیش  \n خاموش شده است",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
                                           color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                Text(
-                                  _motorStatus.isOn
-                                      ? "چاه روشن است"
-                                      : "چاه از ${_offTime()} دقیقه پیش  \n خاموش شده است",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : Container(),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     decoration: BoxDecoration(

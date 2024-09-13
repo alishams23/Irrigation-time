@@ -89,7 +89,16 @@ class ApiMotorPower {
         // If the server returns a 200 OK response, parse the JSON
         var data = jsonDecode(utf8.decode(response.bodyBytes));
         // Handle the data as needed
-        return WaterWell.fromJson(data);
+        WaterWell status = WaterWell.fromJson(data);
+        final prefs = await SharedPreferences.getInstance();
+        if (status.isAdmin) {
+          prefs.setString('full_name', '${status.fullName}⭐️');
+          prefs.setString('is_admin', 'true');
+        } else {
+          prefs.setString('full_name', status.fullName);
+          prefs.setString('is_admin', 'false');
+        }
+        return status;
       } else {
         // If the server did not return a 200 OK response, throw an exception
         throw Exception('Failed to load user data');

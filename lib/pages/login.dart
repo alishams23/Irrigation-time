@@ -107,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
       await prefs.setString('token', responseBody['token']);
       await prefs.setString('username', responseBody['username']);
       await prefs.setString('status', responseBody['status']);
+      await prefs.setString('phone_number', _phoneController.text);
       // Navigate to HomePage
       Navigator.push(
         context,
